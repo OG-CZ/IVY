@@ -3,13 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>IVY</title>
+    <title>Ivy</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="assets/img/ivy-icon-1.ico" type="image/x-icon">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.css" />
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <!-- own css -->
     <link rel="stylesheet" href="css/style.css" />
@@ -43,6 +45,20 @@
           </div>
 
           <h5 class="text-light text text-center">Ask me anything</h5>
+
+          <div class="col-md-12 mt-4 pt-4">
+            <div class="text-center">
+              <div id="TextInput" class="d-flex"> 
+                
+                <input type="text" class="input-field" name="chatbox" id="chatbox" placeholder="type here ... ">
+                <button id="MicBtn" class="glow-on-hover"><i class="bi bi-mic"></i></button>
+                <button id="ChatBtn" class="glow-on-hover"><i class="bi bi-chat-left-dots"></i></button>
+                <button id="SettingsBtn" class="glow-on-hover"><i class="bi bi-gear"></i></button>
+
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="col-md-1"></div>
@@ -69,7 +85,6 @@
 
     <!-- main js -->
     <script src="js/main.js"></script>
-
 
     <script src="/eel.js"></script>
   </body>
