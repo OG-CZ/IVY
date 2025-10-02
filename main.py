@@ -1,15 +1,17 @@
 import os
 import eel
-import pkg_resources as pkg
+from features import *
 
 eel.init('www')
- 
+
 host = 'localhost'
-port = 5500
+port = 8000 
 
-os.system(f'start msedge.exe --app="http://{host}:{port}/index.html"')
+# try:
+if not os.system(f'start msedge.exe --app="http://{host}:{port}/index.html"'):
+	play_assistant_sound()
 
-eel.start(
+	eel.start(
 	'index.html',
 	options={
 		'mode': None,      
@@ -19,3 +21,7 @@ eel.start(
 	},
 	block=True
 )
+# except Exception as e:
+# 	print("ERROR!!!!")
+# 	print(e)
+
