@@ -1,1 +1,3 @@
-# I.V.Y. - Intelligent Voice for You
+# I.V.Y. (Ivy)
+
+> "Intelligent Voice for You"
