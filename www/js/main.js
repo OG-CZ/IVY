@@ -17,7 +17,7 @@ $(document).ready(function () {
     height: 200,
     style: "ios9",
     amplitude: 1,
-    speed: "0.15",
+    speed: "0.10",
     autostart: true,
   });
 
