@@ -1,0 +1,3 @@
+# Core dependencies for Ivy
+eel # https://pypi.org/project/Eel/
+pyttsx3 # https://pypi.org/project/pyttsx3/
