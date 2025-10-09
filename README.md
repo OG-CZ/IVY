@@ -25,4 +25,8 @@ Install the required dependencies:
 pip install -r requirements.txt
 ```
 
+Lastly, install vosk for offline speech model recognition
+
+https://alphacephei.com/vosk/models == vosk-model-en-us-0.22
+
 > If you are on VSCode you must select the python interpreter that you locally created
