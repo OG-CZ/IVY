@@ -1,8 +1,11 @@
 import pyttsx3
 import speech_recognition as sr
-from vosk import Model, KaldiRecognizer
+from vosk import Model, KaldiRecognizer, SetLogLevel
 import json
 import os
+import eel
+
+SetLogLevel(-1)  # disable vosk log
 
 # For Mac, If you face error related to "pyobjc" when running the `init()` method :
 # Install 9.0.1 version of pyobjc : "pip install pyobjc>=9.0.1"
@@ -22,35 +25,53 @@ def speak(text):
     engine.runAndWait()
 
 
-import os
-import speech_recognition as sr
-
-
+@eel.expose
 def take_command():
+
     model_dir = "machine-learning/vosk-model-small-en-us-0.15"
+
     if not os.path.isdir(model_dir):
         print(f"Model folder missing: {model_dir}")
         return ""
-    os.environ["VOSK_MODEL_PATH"] = model_dir  # let recognize_vosk find it
+
+    os.environ["VOSK_MODEL_PATH"] = (
+        model_dir  # not needed if model path is passed directly
+    )
 
     r = sr.Recognizer()
+
     with sr.Microphone() as source:
         print("listening...")
+        eel.DisplayMessage("listening...")
         r.adjust_for_ambient_noise(source, duration=0.5)
-        audio = r.listen(source, timeout=10, phrase_time_limit=6)
+        try:
+            audio = r.listen(source, timeout=10)
+        except sr.WaitTimeoutError:
+            print("Timeout waiting for speech.")
+            return ""
     try:
         print("recognizing")
+        eel.DisplayMessage("recognizing....")
         result = r.recognize_vosk(audio, language="en-US")
         if result.startswith("{"):
-            import json
-
             try:
-                txt = json.loads(result).get("text", "")
+                query = json.loads(result).get("text", "")
             except json.JSONDecodeError:
-                txt = ""
+                query = ""
         else:
-            txt = result
-        return txt.lower()
+            query = result
+
+        if not query:
+            eel.DisplayMessage("Could not understand, please try again.")
+            print("Could not understand, please try again.")
+            return query.lower()
+
+        eel.DisplayMessage(query)
+        print(query)
+        speak(query)
+        eel.ShowHood()
+
+        return query.lower()
     except sr.UnknownValueError:
         print("Could not understand audio.")
     except sr.WaitTimeoutError:
@@ -69,10 +90,7 @@ def check_mic_to_use():
         )
 
 
-text = take_command()
-speak(text)
-
-
+# backup a bruteforce way if sr.recognize function is not working
 def take_command_force(device_index=None):
     """
     Brute-force listen-and-recognize loop using Vosk/Kaldi.
@@ -100,7 +118,6 @@ def take_command_force(device_index=None):
 
     try:
         with sr.Microphone(device_index=device_index) as source:
-            print("Calibrating (0.5s)...")
             r.adjust_for_ambient_noise(source, duration=0.5)
             print("Listening...")
             audio = r.listen(source, timeout=10, phrase_time_limit=6)
@@ -112,7 +129,7 @@ def take_command_force(device_index=None):
         return ""
 
     try:
-        print("Recognizing (KaldiRecognizer)...")
+        print("Recognizing...")
         rec = KaldiRecognizer(model, 16000)
         raw = audio.get_raw_data(convert_rate=16000, convert_width=2)
         if rec.AcceptWaveform(raw):
@@ -120,7 +137,6 @@ def take_command_force(device_index=None):
         else:
             data = json.loads(rec.FinalResult())
         text = data.get("text", "").strip()
-        print("You said:", text or "<empty>")
         return text.lower()
     except json.JSONDecodeError:
         print("JSON parse error.")

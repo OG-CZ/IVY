@@ -1,6 +1,7 @@
 from playsound import playsound
 import eel
 
+
 # play assistant sound function
 @eel.expose
 def play_assistant_sound():
