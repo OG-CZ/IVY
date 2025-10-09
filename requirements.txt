@@ -1,3 +1,7 @@
 # Core dependencies for Ivy
-eel # https://pypi.org/project/Eel/
-pyttsx3 # https://pypi.org/project/pyttsx3/
+Eel==0.18.2                 # https://pypi.org/project/Eel/ -> my version Eel 0.18.2
+pyttsx3==2.99               # https://pypi.org/project/pyttsx3/ -> my version -> pyttsx3 2.99
+SpeechRecognition==3.14.3   # https://pypi.org/project/SpeechRecognition/ -> my version SpeechRecognition 3.14.3
+PyAudio==0.2.14             # https://pypi.org/project/PyAudio/ -> my version PyAudio 0.2.14
+vosk==0.3.45                # https://pypi.org/project/vosk/ -> my version vosk 0.3.45
+openai-whisper==20250625    # https://pypi.org/project/openai-whisper/ -> my version openai-whisper 20250625
