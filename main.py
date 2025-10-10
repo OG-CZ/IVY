@@ -1,17 +1,26 @@
 import os
+import time
 import eel
-from features import *
-from command import *
+from lib.vocal.features import *
+from lib.vocal.command import *
 
 eel.init("www")
 
-host = "localhost"
-port = 8000
+HOST = "localhost"
+PORT = 5500
+VERSION = int(time.time())
 
-os.system(f'start msedge.exe --app="http://{host}:{port}/index.html"')
 
-eel.start(
-    "index.html",
-    options={"mode": None, "host": host, "port": port, "chromeFlags": []},
-    block=True,
-)
+def main():
+    start_page = f"index.html?v={VERSION}"
+    os.system(f'start msedge.exe --app="http://{HOST}:{PORT}/{start_page}"')
+
+    eel.start(
+        start_page,
+        options={"mode": None, "host": HOST, "port": PORT, "chromeFlags": []},
+        block=True,
+    )
+
+
+if __name__ == "__main__":
+    main()

@@ -25,4 +25,4 @@ Install the required dependencies:
 pip install -r requirements.txt
 ```
 
-> If you are on VSCode you must select the python interpreter that you locally created
+> If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"

@@ -109,7 +109,7 @@ function canvasApp() {
     //alpha values will lessen as particles move further back, causing depth-based darkening:
     zeroAlphaDepth = -750;
 
-    turnSpeed = (2 * Math.PI) / 1200; //the sphere will rotate at this speed (one complete rotation every 1600 frames).
+    turnSpeed = (2 * Math.PI) / 2400; //the sphere will rotate at this speed (one complete rotation every 1600 frames).
     turnAngle = 0; //initial angle
 
     timer = setInterval(onTimer, 10 / 24);
