@@ -1,0 +1,290 @@
+body {
+  /* background-color: #06060A; */
+
+  background-color: black;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.square {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square span:nth-child(1) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#6b72ff00 50%, #1faa263b 40%);
+  box-shadow: 0 0 50px rgb(31, 170, 38), inset 0 0 50px rgb(31, 170, 38);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate1 6s linear infinite;
+}
+
+.square span:nth-child(2) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#6b72ff00 50%, #1faa263b 40%);
+  box-shadow: 0 0 50px rgb(31, 170, 38), inset 0 0 50px rgb(31, 170, 38);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate2 4s linear infinite;
+}
+
+.square span:nth-child(3) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#6b72ff00 50%, #1faa263b 40%);
+  box-shadow: 0 0 50px rgb(31, 170, 38), inset 0 0 50px rgb(31, 170, 38);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate3 8s linear infinite;
+}
+
+@keyframes animate1 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate2 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes animate3 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.IVYHood {
+}
+
+/* chatbox */
+/* Input Filed Start*/
+
+#TextInput {
+  background-color: black;
+  border-color: green;
+  border: 1.5px solid rgb(31, 170, 38);
+  box-shadow: 0 0 20px rgb(31, 170, 38), inset 0 0 0px rgb(31, 170, 38);
+  border-radius: 10px;
+  color: white;
+  padding: 3px 0px 3px 20px;
+  padding-right: 10px;
+  margin: 0px 20%;
+}
+
+.input-field {
+  background-color: transparent;
+  border: none;
+  width: 95%;
+  outline: none;
+  color: white;
+  font-family: cursive;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; */
+}
+
+.glow-on-hover {
+  width: 35px;
+  height: 35px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: black;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  padding: 0px;
+  margin-left: 10px;
+}
+
+.glow-on-hover:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: black;
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: black;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/*chatbox end*/
+
+/* body {
+  background-color: black;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.square {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square span:nth-child(1) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#0000003b 50%, #00ff623b 40%);
+  box-shadow: 0 0 50px rgb(0, 255, 34), inset 0 0 50px rgb(0, 255, 34);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate1 6s linear infinite;
+}
+
+.square span:nth-child(2) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#0000003b 50%, #00ff623b 40%);
+  box-shadow: 0 0 50px rgb(0, 255, 34), inset 0 0 50px rgb(0, 255, 34);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate2 4s linear infinite;
+}
+
+.square span:nth-child(3) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#0000003b 50%, #00ff623b 40%);
+  box-shadow: 0 0 50px rgb(0, 255, 34), inset 0 0 50px rgb(0, 255, 34);
+  border-radius: 38% 62% 63% 37% / 41% 44%;
+  transition: 0.5;
+  animation: animate3 8s linear infinite;
+}
+
+@keyframes animate1 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate2 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes animate3 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.IVYHood {
+}
+ */
