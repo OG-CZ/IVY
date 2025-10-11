@@ -1,12 +1,12 @@
 <div align="center">
-  <img src="database/_README/ivy-banner2.png" alt="ARA Motorhub Logo"/>
+  <img src="database/_README/ivy-banner.png" alt="ARA Motorhub Logo"/>
 </div>
 
 # I.V.Y.
 
-### Intelligent Voice for You
+<!-- ### Intelligent Voice for You
 
-## Installation
+## Installation -->
 
 It's recommended to use a virtual environment to keep dependencies isolated
 
