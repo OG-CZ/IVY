@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="ui/assets/img/ivy-banner.png" alt="ARA Motorhub Logo"/>
+</div>
+
 # I.V.Y.
 
 ### Intelligent Voice for You
