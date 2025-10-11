@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="database/_README/ivy-banner.png" alt="ARA Motorhub Logo"/>
+  <img src="database/_README/ivy-banner2.png" alt="ARA Motorhub Logo"/>
 </div>
 
 # I.V.Y.
