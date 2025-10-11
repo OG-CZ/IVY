@@ -5,3 +5,4 @@ SpeechRecognition==3.14.3   # https://pypi.org/project/SpeechRecognition/ -> my 
 PyAudio==0.2.14             # https://pypi.org/project/PyAudio/ -> my version PyAudio 0.2.14
 vosk==0.3.45                # https://pypi.org/project/vosk/ -> my version vosk 0.3.45
 openai-whisper==20250625    # https://pypi.org/project/openai-whisper/ -> my version openai-whisper 20250625
+pywhatkit==5.4              # https://pypi.org/project/pywhatkit/ -> my version pywhatkit 5.4
