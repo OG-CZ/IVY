@@ -42,4 +42,15 @@ $(document).ready(function () {
     $("#SiriWave").attr("hidden", false);
     eel.all_commands()();
   });
+
+  // key word detection
+  function doc_keyUp(e) {
+    if (e.key === "i" && (e.metaKey || e.ctrlKey)) {
+      //   eel.playAssistantSound();
+      $("#Oval").attr("hidden", true);
+      $("#SiriWave").attr("hidden", false);
+      eel.all_commands()();
+    }
+  }
+  document.addEventListener("keyup", doc_keyUp, false);
 });
