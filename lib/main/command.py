@@ -127,6 +127,7 @@ def transcribe_audio(filename="input.wav"):
     return text
 
 
+# THE CORE CONNECTION OF ALL COMMANDS
 @eel.expose
 def take_command():
     eel.DisplayMessage("Hello, I am Ivy")
