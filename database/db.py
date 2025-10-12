@@ -8,7 +8,7 @@ import sqlite3
     3.) ...
 """
 
-con = sqlite3.connect("./db/ivy.db")
+con = sqlite3.connect("./database/ivy.db")
 cursor = con.cursor()
 
 ### SYS COMMAND DATABASE
