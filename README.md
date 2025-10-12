@@ -37,8 +37,6 @@ pip install -r requirements.txt
 
 If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"
 
----
-
 </br>
 <div align="center">
   <img src="database/_README/ivy-footer2.png" alt="Ivy Footer"/>
