@@ -1,5 +1,4 @@
 import os
-import time
 import eel
 from lib.main.features import *
 from lib.main.command import *
