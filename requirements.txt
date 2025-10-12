@@ -7,3 +7,4 @@ vosk==0.3.45                # https://pypi.org/project/vosk/ -> my version vosk 
 openai-whisper==20250625    # https://pypi.org/project/openai-whisper/ -> my version openai-whisper 20250625
 pywhatkit==5.4              # https://pypi.org/project/pywhatkit/ -> my version pywhatkit 5.4
 pytest==8.4.2               # https://pypi.org/project/pytest/ -> my version pytest 8.4.2
+pvporcupine==3.0.5          # https://pypi.org/project/pvporcupine/ -> my version pvporcupine 3.0.5
