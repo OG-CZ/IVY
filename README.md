@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="database/_README/ivy-header.png" alt="ARA Motorhub Logo"/>
+  <img src="database/_README/ivy-header-lighter.png" alt="ARA Motorhub Logo"/>
 </div>
 
 ## Installation
