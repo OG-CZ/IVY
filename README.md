@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="database/_README/ivy-header-lighter.png" alt="Ivy Header"/>
+  <img src="database/_README/ivy-header2.png" alt="Ivy Header"/>
 </div>
 
 ## Installation
