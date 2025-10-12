@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="database/_README/ivy-header-lighter.png" alt="ARA Motorhub Logo"/>
+  <img src="database/_README/ivy-header-lighter.png" alt="Ivy Header"/>
 </div>
 
 ## Installation
@@ -28,5 +28,5 @@ pip install -r requirements.txt
 > If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"
 
 <div align="center">
-  <img src="database/_README/ivy-footer.png" alt="ARA Motorhub Logo"/>
+  <img src="database/_README/ivy-footer.png" alt="Ivy Footer"/>
 </div>
