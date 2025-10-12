@@ -2,9 +2,9 @@
   <img src="database/_README/ivy-header1.png" alt="Ivy Header"/>
 </div>
 
-## Ivy
+## Description
 
-**Ivy** (Intelligent Voice for You) is a lightweight, privacy-focused voice assistant designed to provide a natural interaction experience without relying on complex cloud-based AI systems. It combines speech recognition, hotword detection, and intelligent command processing to create a responsive digital companion that runs primarily on your local machine.
+**Ivy** (Intelligent Voice for You) is a virtual assistant designed to provide a natural interaction experience without relying on complex cloud-based AI systems. It combines speech recognition, hotword detection, and intelligent command processing to create a responsive digital companion that runs primarily on your local machine.
 
 It is more than a virtual assistant it’s a concept of a personal digital companion that blends usability with human-like interaction. It incorporates lightweight NLP (Natural Language Processing) features and intelligent command interpretation for a smoother experience
 
