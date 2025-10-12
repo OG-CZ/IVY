@@ -2,7 +2,7 @@
   <img src="database/_README/ivy-header1.png" alt="Ivy Header"/>
 </div>
 
-## Description
+## About
 
 **Ivy** (Intelligent Voice for You) is a virtual assistant designed to provide a natural interaction experience without relying on complex cloud-based AI systems. It combines speech recognition, hotword detection, and intelligent command processing to create a responsive digital companion that runs primarily on your local machine.
 
@@ -35,8 +35,11 @@ Install the required dependencies:
 pip install -r requirements.txt
 ```
 
-> If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"
+If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"
 
+---
+
+</br>
 <div align="center">
   <img src="database/_README/ivy-footer2.png" alt="Ivy Footer"/>
 </div>
