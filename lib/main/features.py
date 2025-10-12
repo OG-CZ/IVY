@@ -1,12 +1,21 @@
 import re
+import struct
 import webbrowser
 from playsound import playsound
 import eel
+import pvporcupine
 from lib.main.command import *
-import os
 import lib.main.response as response
+from lib.main.helper import *
+import os
 import pywhatkit as kit
 import sqlite3
+import pyautogui as autogui
+
+import time
+import pyaudio
+import traceback
+import random
 
 con = sqlite3.connect("./database/ivy.db")
 cursor = con.cursor()
@@ -57,8 +66,6 @@ def open_command(query):
                     os.system("start " + app_name)
 
         except Exception as e:
-            import traceback
-
             print("Error in open_command:", e)
             traceback.print_exc()
             speak(random.choice(response.cannot_understand_user))
@@ -101,7 +108,65 @@ def play_youtube(query):
     kit.playonyt(search_term)
 
 
-def extract_yt_term(command):
-    pattern = r"play\s+(.*?)\s+on\s+youtube"
-    match = re.search(pattern, command, re.IGNORECASE)
-    return match.group(1).strip() if match else None
+#  running in background
+def hotword(q=None):
+    porcupine = None
+    paud = None
+    audio_stream = None
+
+    try:
+        print("Initializing Porcupine...")
+        porcupine = pvporcupine.create(
+            access_key=config.PORCUPINE_API_KEY,
+            keyword_paths=[config.PORCUPINE_IVY_HOTKEY_MODEL],
+        )
+
+        paud = pyaudio.PyAudio()
+        audio_stream = paud.open(
+            rate=porcupine.sample_rate,
+            channels=1,
+            format=pyaudio.paInt16,
+            input=True,
+            frames_per_buffer=porcupine.frame_length,
+        )
+
+        print("Listening for hotword...")
+
+        last_detected = 0
+        cooldown = 3  # seconds to wait before re-triggering
+
+        while True:
+            pcm = audio_stream.read(porcupine.frame_length, exception_on_overflow=False)
+            pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)
+            keyword_index = porcupine.process(pcm)
+
+            if keyword_index >= 0:
+                now = time.time()
+                if now - last_detected > cooldown:
+                    print("Hotword detected!")
+
+                    if q is not None:
+                        q.put("hotword")
+                    else:
+                        import eel
+                        from lib.main.command import all_commands
+
+                        eel.spawn(all_commands)
+
+                    last_detected = now
+
+                    # simulate a shortcut key (example: Win + J)
+                    autogui.keyDown("ctrl")
+                    autogui.press("i")
+                    autogui.keyUp("ctrl")
+    except Exception as e:
+        print("Error:", repr(e))
+        traceback.print_exc()
+    finally:
+        if porcupine:
+            porcupine.delete()
+        if audio_stream:
+            audio_stream.close()
+        if paud:
+            paud.terminate()
+        print("Program exited cleanly.")

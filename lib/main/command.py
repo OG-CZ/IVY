@@ -1,5 +1,6 @@
 import random
 import time
+import traceback
 import audioop
 import pyttsx3
 import speech_recognition as sr
@@ -126,6 +127,7 @@ def transcribe_audio(filename="input.wav"):
     return text
 
 
+@eel.expose
 def take_command():
     eel.DisplayMessage("Hello, I am Ivy")
     eel.sleep(1.0)
@@ -142,26 +144,30 @@ def take_command():
 # core logic for all commands
 @eel.expose
 def all_commands() -> str:
-    query = take_command()
-    query = query.rstrip()
+    try:
+        query = take_command()
+        query = query.rstrip()
 
-    print("query is :", query)
+        print("query is :", query)
 
-    # if no voice
-    if len(query) < 2:
-        speak(random.choice(response.cannot_understand_user))
+        # if no voice
+        if len(query) < 2:
+            speak(random.choice(response.cannot_understand_user))
 
-    # opening
-    if "open" in query.lower():
-        from lib.main.features import open_command
+        # opening
+        if "open" in query.lower():
+            from lib.main.features import open_command
 
-        open_command(query)
-    elif "on youtube" in query.lower() or "in youtube" in query.lower():
-        from lib.main.features import play_youtube
+            open_command(query)
+        elif "on youtube" in query.lower() or "in youtube" in query.lower():
+            from lib.main.features import play_youtube
 
-        play_youtube(query)
-    else:
-        print("No command is found")
+            play_youtube(query)
+        else:
+            print("No command is found")
+    except Exception as e:
+        print("Error:", e)
+        traceback.print_exc()
 
 
 def idle_show_hood():
