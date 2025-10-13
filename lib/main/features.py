@@ -30,6 +30,8 @@ def play_assistant_sound():
 
 # for opening apps
 def open_command(query):
+    from lib.main.helper import clean_app_name
+
     query = query.replace(config.ASSISTANT_NAME, "")
     query = query.lower().strip()
 
@@ -46,53 +48,38 @@ def open_command(query):
     if app_name != "":
         app_name = clean_app_name(app_name)
         try:
+            # Check system commands first
             cursor.execute("SELECT path FROM sys_command WHERE name = ?", (app_name,))
-            results = cursor.fetchall()
+            sys_results = cursor.fetchall()
 
-            if len(results) != 0:
+            # Check web commands
+            cursor.execute("SELECT url FROM web_command WHERE name = ?", (app_name,))
+            web_results = cursor.fetchall()
+
+            if len(sys_results) != 0:
                 speak("Opening " + app_name)
-                os.startfile(results[0][0])
+                os.startfile(sys_results[0][0])
+                return
+            elif len(web_results) != 0:
+                speak("Opening " + app_name)
+                webbrowser.open(web_results[0][0])
+                return
             else:
-                cursor.execute(
-                    "SELECT url FROM web_command WHERE name = ?", (app_name,)
+                speak(
+                    random.choice(
+                        [r.format(app=app_name) for r in response.cannot_find_app]
+                    )
                 )
-                results = cursor.fetchall()
-
-                if len(results) != 0:
-                    speak("Opening " + app_name)
-                    webbrowser.open(results[0][0])
-                else:
-                    speak("Opening " + app_name)
-                    os.system("start " + app_name)
+                print(f"App '{app_name}' not found in database")
+                return
 
         except Exception as e:
             print("Error in open_command:", e)
             traceback.print_exc()
             speak(random.choice(response.cannot_understand_user))
-
-
-def clean_app_name(app_name):
-
-    app_name = app_name.strip().lower()
-
-    replacements = {
-        "sigma": "figma",
-        "you tube": "youtube",
-        "you-tube": "youtube",
-        "photo shop": "photoshop",
-        "clod": "claude",
-        "clad": "claude",
-        "cloud": "claude",
-        "clode": "claude",
-        "clade": "claude",
-        "claw": "claude",
-        "clud": "claude",
-        "glud": "claude",
-        "gethub": "github",
-        "get hub": "github",
-    }
-
-    return replacements.get(app_name, app_name)
+    else:
+        speak(random.choice(response.cannot_understand_app_name))
+        print("No application name provided")
 
 
 def play_youtube(query):

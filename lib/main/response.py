@@ -25,3 +25,18 @@ cannot_understand_youtube = [
     "That video seems unavailable or invalid.",
     "Sorry, I don't know which video you mean.",
 ]
+
+cannot_find_app = [
+    "Sorry, I couldn't find {app} in my database. Please check if it's added to the system.",
+    "I don't recognize the app '{app}'",
+    "'{app}' is not available. Try another app or update my system commands.",
+    "I can't open '{app}' because it's not in my list.",
+]
+
+cannot_understand_app_name = [
+    "Sorry, which app did you mean?",
+    "Could you repeat the app name for me?",
+    "I didn’t quite catch the application you said.",
+    "What app should I open?",
+    "Mind saying the app name again?",
+]

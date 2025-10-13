@@ -136,8 +136,8 @@ def take_command():
     query = transcribe_audio(file)
     eel.DisplayMessage(query)
 
-    # ADD A TIMEER IF STUCK HERE
-    idle_show_hood()
+    sleep_time = min(max(2, 0.4 * len(query.split())), 6)
+    time.sleep(sleep_time)
 
     return query
 
@@ -155,11 +155,13 @@ def all_commands() -> str:
         if len(query) < 2:
             speak(random.choice(response.cannot_understand_user))
 
-        # opening
+        # opening app or website
         if "open" in query.lower():
             from lib.main.features import open_command
 
             open_command(query)
+
+        # play video in youtube
         elif "on youtube" in query.lower() or "in youtube" in query.lower():
             from lib.main.features import play_youtube
 
@@ -169,11 +171,8 @@ def all_commands() -> str:
     except Exception as e:
         print("Error:", e)
         traceback.print_exc()
-
-
-def idle_show_hood():
-    timer = threading.Timer(5.0, eel.ShowHood)
-    timer.start()
+    finally:
+        eel.ShowHood()
 
 
 def check_mic_to_use():
