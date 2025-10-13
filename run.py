@@ -9,19 +9,16 @@ def start_ivy(q: mp.Queue):
     import eel
     from lib.main.command import all_commands
 
-    # Start Eel (start() should call eel.start(..., block=False))
     start()
 
-    # Consume hotword events and run commands in the UI process
     def consume():
         while True:
             msg = q.get()
             if msg == "hotword":
-                eel.spawn(all_commands)  # safe call with UI connected
+                eel.spawn(all_commands)
 
     threading.Thread(target=consume, daemon=True).start()
 
-    # Keep UI process alive
     while True:
         time.sleep(1)
 

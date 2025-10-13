@@ -11,7 +11,6 @@ import os
 import eel
 import config
 import lib.main.response as response
-import threading
 
 # For Mac, If you face error related to "pyobjc" when running the `init()` method :
 # Install 9.0.1 version of pyobjc : "pip install pyobjc>=9.0.1"
@@ -167,12 +166,18 @@ def all_commands() -> str:
 
             play_youtube(query)
         else:
-            print("No command is found")
+            print(f"No command match found for: '{query}'")
+        # speak(f"I heard '{query}' but I don't know how to handle that command yet.")
+
     except Exception as e:
-        print("Error:", e)
+        print("Error in all_commands:", e)
         traceback.print_exc()
     finally:
-        eel.ShowHood()
+        print("=== calling ShowHood ===")
+        try:
+            eel.ShowHood()
+        except Exception as e:
+            print("ShowHood error:", e)
 
 
 def check_mic_to_use():

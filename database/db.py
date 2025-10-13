@@ -51,3 +51,18 @@ def web_delete_previous():
 
 
 # script here
+
+
+### WHATSAPP DB
+
+query = """CREATE TABLE IF NOT EXISTS contacts (id integer primary key, name VARCHAR(200), mobile_no VARCHAR(255), email VARCHAR(255) NULL)"""
+cursor.execute(query)
+
+
+def whatsapp_add_on_db(name, number, email="null"):
+    query = f"INSERT INTO contacts VALUES (null,'{name}', '{number}', {email})"
+    cursor.execute(query)
+    con.commit()
+
+
+# script here
