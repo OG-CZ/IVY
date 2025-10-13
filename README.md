@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="database/_README/ivy-header1.gif" alt="Ivy Header"/>
+  <img src="database/_README/ivy-header.gif" alt="Ivy Header"/>
 </div>
 
 ## About
@@ -39,5 +39,5 @@ If you are on VSCode you must select the python interpreter that you locally cre
 
 </br>
 <div align="center">
-  <img src="database/_README/ivy-footer2.png" alt="Ivy Footer"/>
+  <img src="database/_README/ivy-footer.png" alt="Ivy Footer"/>
 </div>
