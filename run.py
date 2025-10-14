@@ -1,39 +1,27 @@
 import multiprocessing as mp
-import threading
-import time
 
 
-def start_ivy(q: mp.Queue):
-    print("UI process is running")
+def start_ivy():
+    print("UI process is running.")
     from main import start
-    import eel
-    from lib.main.command import all_commands
 
     start()
 
-    def consume():
-        while True:
-            msg = q.get()
-            if msg == "hotword":
-                eel.spawn(all_commands)
 
-    threading.Thread(target=consume, daemon=True).start()
-
-    while True:
-        time.sleep(1)
-
-
-def listen_hotword(q: mp.Queue):
-    print("Hotword process is running")
+def listen_hotword():
+    print("Hotword process is running.")
     from lib.main.features import hotword
 
-    hotword(q)  # emit events instead of calling eel
+    hotword()
 
 
 if __name__ == "__main__":
-    q = mp.Queue()
-    p1 = mp.Process(target=start_ivy, args=(q,), daemon=True)
-    p2 = mp.Process(target=listen_hotword, args=(q,), daemon=True)
+    mp.set_start_method("spawn", force=True)
+    p1 = mp.Process(target=start_ivy, daemon=False)
+    p2 = mp.Process(target=listen_hotword, daemon=True)
     p1.start()
     p2.start()
     p1.join()
+    if p2.is_alive():
+        p2.terminate()
+        p2.join()
