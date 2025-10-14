@@ -216,10 +216,70 @@ body {
   color: white;
   background-color: #1faa26;
 }
+
 .width-size {
   max-width: 80%;
   width: auto;
 }
+
+.chat-canvas.offcanvas {
+  --bs-offcanvas-bg: rgba(20, 22, 26, 0.25);
+  --bs-offcanvas-color: #fff;
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  background-color: rgba(20, 22, 26, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(31, 170, 38, 0.45); /* green glow */
+}
+
+/* Chat history area */
+#chat-canvas-body {
+  padding: 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#chat-canvas-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Glass message bubbles */
+.sender_message,
+.receiver_message {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: visible;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Sender: green tinted glass */
+.sender_message {
+  background: rgba(31, 170, 38, 0.22);
+  border: 1px solid rgba(31, 170, 38, 0.45);
+  color: #eaffea;
+  box-shadow: 0 0 12px rgba(31, 170, 38, 0.6); /* green glow */
+}
+
+.receiver_message {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #eaeaea;
+  box-shadow: 0 0 8px rgba(31, 170, 38, 0.25); /* soft faint green glow */
+}
+
+/* Max bubble width */
+.width-size {
+  max-width: 80%;
+}
+
+/* Optional: ensure the base .chat-canvas is transparent */
+.chat-canvas {
+  background-color: transparent !important;
+}
+
 /* Chat Box Start End*/
 
 /* body {
