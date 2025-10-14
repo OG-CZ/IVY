@@ -8,11 +8,21 @@ $(document).ready(function () {
   }
   eel.expose(DisplayMessage);
 
+  function animateOvalContainer() {
+    const oval = document.getElementById("Oval");
+    if (!oval) return;
+    const container = oval.closest(".container") || oval; // animate the whole container
+    container.classList.remove("zoom-in-soft"); // restart if already applied
+    void container.offsetWidth; // reflow
+    container.classList.add("zoom-in-soft");
+  }
+
   // display hood
   eel.expose(ShowHood);
   function ShowHood() {
     $("#Oval").attr("hidden", false);
     $("#SiriWave").attr("hidden", true);
+    // animateOvalContainer();
   }
 
   eel.expose(senderText);
@@ -72,5 +82,6 @@ $(document).ready(function () {
     setTimeout(function () {
       $("#Oval").attr("hidden", false);
     }, 1000);
+    // animateOvalContainer();
   }
 });
