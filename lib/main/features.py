@@ -1,5 +1,7 @@
 import re
+from shlex import quote
 import struct
+import subprocess
 import webbrowser
 from playsound import playsound
 import eel
@@ -11,7 +13,7 @@ import os
 import pywhatkit as kit
 import sqlite3
 import pyautogui as autogui
-
+from rapidfuzz import process
 import time
 import pyaudio
 import traceback
@@ -157,3 +159,89 @@ def hotword(q=None):
         if paud:
             paud.terminate()
         print("Program exited cleanly.")
+
+
+# find contacts in whatsapp
+def findContact(query):
+    words_to_remove = [
+        config.ASSISTANT_NAME,
+        "make",
+        "a",
+        "to",
+        "phone",
+        "call",
+        "send",
+        "message",
+        "whatsapp",
+        "video",
+        "please",
+        "can",
+        "you",
+        "me",
+        "for",
+        "the",
+        "contact",
+        ".",
+        ",",
+        "on",
+        "with",
+        "",
+    ]
+    query = remove_words(query, words_to_remove)
+    query = query.strip().lower()
+
+    cursor.execute("SELECT name, mobile_no FROM contacts")
+    contacts = cursor.fetchall()
+    contact_names = [name.lower() for name, _ in contacts]
+
+    match, score, idx = process.extractOne(query, contact_names)
+    if score > 70:
+        mobile_number_str = str(contacts[idx][1])
+        print(f"Selected contact: {match}, Number: {mobile_number_str}")
+        if not mobile_number_str.startswith(
+            config.COUNTRY_CODES["PH"]
+        ):  # change this number according to your country
+            mobile_number_str = config.COUNTRY_CODES["PH"] + mobile_number_str
+        return mobile_number_str, match
+    else:
+        speak(random.choice(response.cannot_find_whatsapp_contact))
+        return 0, 0
+
+
+def whatsApp(mobile_no, message, flag, name):
+
+    if flag == "message":
+        target_tab = 12
+        ivy_message = f"Message sent successfully to {name}"
+    elif flag == "call":
+        target_tab = 7
+        message = ""
+        ivy_message = f"Calling {name}"
+    else:
+        target_tab = 6
+        message = ""
+        ivy_message = f"Starting video call with {name}"
+
+    import re
+
+    message = re.sub(r"'{2,}", "'", message)
+    message = message.replace(".", "")
+    message = message.strip()
+
+    encoded_message = quote(message)
+
+    whatsapp_url = f"whatsapp://send?phone={mobile_no}&text={encoded_message}"
+    full_command = f'start "" "{whatsapp_url}"'
+
+    try:
+        subprocess.run(full_command, shell=True)
+        time.sleep(5)
+
+        autogui.hotkey("ctrl", "f")
+        for _ in range(1, target_tab):
+            autogui.hotkey("tab")
+        autogui.hotkey("enter")
+        speak(ivy_message)
+    except Exception as e:
+        print("Error sending WhatsApp message:", e)
+        speak(random.choice(response.cannot_send_whatsapp_message))

@@ -40,3 +40,18 @@ cannot_understand_app_name = [
     "What app should I open?",
     "Mind saying the app name again?",
 ]
+
+cannot_find_whatsapp_contact = [
+    "Sorry, I couldn't find a contact in your message. Please try again.",
+    "I wasn't able to identify a contact. Could you repeat the name or number?",
+    "No contact found. Please specify who you want to message or call.",
+    "I need a contact name or number to proceed. Please try again.",
+]
+
+# whatsapp message
+cannot_send_whatsapp_message = [
+    "Sorry, I couldn't send the WhatsApp message.",
+    "I was unable to deliver your WhatsApp message.",
+    "There was a problem sending your WhatsApp message.",
+    "I couldn't complete your WhatsApp request. Please try again.",
+]

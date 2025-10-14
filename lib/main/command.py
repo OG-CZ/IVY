@@ -129,8 +129,8 @@ def transcribe_audio(filename="input.wav"):
 # THE CORE CONNECTION OF ALL COMMANDS
 @eel.expose
 def take_command():
-    eel.DisplayMessage("Hello, I am Ivy")
-    eel.sleep(1.0)
+    # eel.DisplayMessage("Hello, I am Ivy")
+    # eel.sleep(1.0)
     file = record_audio()
     query = transcribe_audio(file)
     eel.DisplayMessage(query)
@@ -144,6 +144,18 @@ def take_command():
 # core logic for all commands
 @eel.expose
 def all_commands() -> str:
+
+    call_keywords = [
+        "call",
+        "phone call",
+        "make a call",
+        "dial",
+        "ring",
+        "place a call",
+        "video call",
+    ]
+    message_keywords = ["send message", "send a message", "message", "text"]
+
     try:
         query = take_command()
         query = query.rstrip()
@@ -165,6 +177,45 @@ def all_commands() -> str:
             from lib.main.features import play_youtube
 
             play_youtube(query)
+
+            # send message,phone call, video call to whatsapp
+        elif any(kw in query.lower() for kw in message_keywords + call_keywords):
+            from lib.main.features import findContact, whatsApp
+            import re
+
+            # Clean the query to extract contact name
+            cleaned_query = re.sub(r"[^\w\s]", "", query)
+            cleaned_query = re.sub(
+                r"\b("
+                + "|".join(message_keywords + call_keywords)
+                + r"|to|and|a|please)\b",
+                "",
+                cleaned_query,
+                flags=re.IGNORECASE,
+            )
+            cleaned_query = cleaned_query.strip()
+
+            contact_no, name = findContact(cleaned_query.lower())
+            if contact_no != 0:
+                flag = ""
+                message = ""
+                if any(kw in query.lower() for kw in message_keywords):
+                    flag = "message"
+                    speak("what message to send")
+                    print("what message to send?")
+                    message = take_command()
+                elif any(kw in query.lower() for kw in call_keywords):
+                    if "video call" in query.lower():
+                        flag = "video call"
+                    else:
+                        flag = "call"
+                    print(flag)
+                else:
+                    flag = "message"
+
+                whatsApp(contact_no, message if flag == "message" else "", flag, name)
+            else:
+                print("something went wrong in whatsapp command.py")
         else:
             print(f"No command match found for: '{query}'")
         # speak(f"I heard '{query}' but I don't know how to handle that command yet.")
