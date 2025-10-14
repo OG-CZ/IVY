@@ -14,3 +14,19 @@ VERSION = int(time.time())
 # hot word detection api -> https://console.picovoice.ai/ - sign up to get key
 PORCUPINE_API_KEY = api.PORCUPINE_API_KEY  # paste here
 PORCUPINE_IVY_HOTKEY_MODEL = "model/hot-word-detection/hey-ivy_en_windows_v3_0_0.ppn"
+
+
+# whatsapp country code
+COUNTRY_CODES = {
+    "PH": "+63",  # Philippines
+    "IN": "+91",  # India
+    "US": "+1",  # United States
+    "UK": "+44",  # United Kingdom
+    "CA": "+1",  # Canada
+    "AU": "+61",  # Australia
+    "SG": "+65",  # Singapore
+    "MY": "+60",  # Malaysia
+    "DE": "+49",  # Germany
+    "FR": "+33",  # France
+    # Add more as needed
+}
