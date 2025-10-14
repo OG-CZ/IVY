@@ -14,6 +14,7 @@
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.css" />
+
     <!-- bootstrap icons -->
     <link
       rel="stylesheet"
@@ -21,7 +22,7 @@
     />
 
     <!-- own css -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=3" />
 
     <!-- texllate -->
     <link rel="stylesheet" href="assets/vendor/texllate/animate.css" />
@@ -71,8 +72,14 @@
                   <button id="MicBtn" class="glow-on-hover">
                     <i class="bi bi-mic"></i>
                   </button>
-                  <button id="ChatBtn" class="glow-on-hover">
-                    <i class="bi bi-chat-left-dots"></i>
+                  <button
+                    id="ChatBtn"
+                    class="glow-on-hover"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScrolling"
+                    aria-controls="offcanvasScrolling"
+                  >
+                    <i class="bi bi-chat-dots"></i>
                   </button>
                   <button id="SettingsBtn" class="glow-on-hover">
                     <i class="bi bi-gear"></i>
@@ -105,6 +112,31 @@
       </section>
     </div>
 
+    <!-- Chat Box -->
+    <div
+      class="offcanvas offcanvas-start chat-canvas"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling"
+      aria-labelledby="offcanvasScrollingLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-white" id="offcanvasScrollingLabel">
+          Chats
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div id="chat-canvas-body" class="offcanvas-body">
+        <!-- chatting code here -->
+      </div>
+    </div>
+
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
@@ -127,8 +159,8 @@
     <script src="https://unpkg.com/siriwave/dist/siriwave.umd.min.js"></script>
 
     <!-- main js -->
-    <script src="eel.js?v=2"></script>
-    <script src="js/controller.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
+    <script src="eel.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

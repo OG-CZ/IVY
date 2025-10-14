@@ -40,6 +40,8 @@ def speak(text):
     engine.setProperty("voice", voices[1].id)
 
     eel.DisplayMessage(text)
+    eel.receiverText(text)
+
     engine.say(text)
     engine.runAndWait()
 
@@ -149,8 +151,10 @@ def all_commands(message=1) -> str:
         query = take_command()
         query = query.rstrip()
         print("query is :", query)
+        eel.senderText(query)
     else:
         query = message
+        eel.senderText(query)
 
     call_keywords = [
         "call",

@@ -87,9 +87,6 @@ body {
   }
 }
 
-.IVYHood {
-}
-
 /* chatbox */
 /* Input Filed Start*/
 
@@ -196,7 +193,34 @@ body {
   }
 }
 
-/*chatbox end*/
+/* Chat Box Start */
+
+.chat-canvas {
+  background-color: #191919;
+}
+
+.receiver_message {
+  padding: 8px;
+  border: 2px solid rgb(0, 255, 85);
+  border-radius: 0px 15px 15px 20px;
+  width: auto;
+  color: white;
+  background-color: #00000014;
+}
+
+.sender_message {
+  padding: 8px;
+  border: 1px solid #1faa26;
+  border-radius: 15px 15px 0px 20px;
+  width: auto;
+  color: white;
+  background-color: #1faa26;
+}
+.width-size {
+  max-width: 80%;
+  width: auto;
+}
+/* Chat Box Start End*/
 
 /* body {
   background-color: black;
