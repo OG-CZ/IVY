@@ -48,7 +48,6 @@ cannot_find_whatsapp_contact = [
     "I need a contact name or number to proceed. Please try again.",
 ]
 
-# whatsapp message
 cannot_send_whatsapp_message = [
     "Sorry, I couldn't send the WhatsApp message.",
     "I was unable to deliver your WhatsApp message.",

@@ -143,7 +143,14 @@ def take_command():
 
 # core logic for all commands
 @eel.expose
-def all_commands() -> str:
+def all_commands(message=1) -> str:
+
+    if message == 1:
+        query = take_command()
+        query = query.rstrip()
+        print("query is :", query)
+    else:
+        query = message
 
     call_keywords = [
         "call",
@@ -157,11 +164,6 @@ def all_commands() -> str:
     message_keywords = ["send message", "send a message", "message", "text"]
 
     try:
-        query = take_command()
-        query = query.rstrip()
-
-        print("query is :", query)
-
         # if no voice
         if len(query) < 2:
             speak(random.choice(response.cannot_understand_user))
