@@ -8,7 +8,7 @@ MODEL_BACKUP = "model/"
 
 # setup
 HOST = "localhost"
-PORT = 5500
+PORT = 8080
 VERSION = int(time.time())
 
 # hot word detection api -> https://console.picovoice.ai/ - sign up to get key
