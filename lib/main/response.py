@@ -61,3 +61,22 @@ welcome_back_user = [
     "Welcome back! Ready when you are",
     "Hi again! Let's get started",
 ]
+
+ask_message_prompt_user = [
+    "What message should I send?",
+    "What would you like to say?",
+    "Please tell me the message.",
+    "What do you want to send?",
+    "Okay, what's the message?",
+    "Tell me the message to send.",
+    "What should the message say?",
+    "I'm ready. What's the message?",
+]
+
+city_not_found_user = [
+    "Sorry, I couldn't find details for {city}. You can check the map: {map_url}",
+    "I couldn't locate {city}. Try another city or see this map: {map_url}",
+    "I couldn't get weather info for {city} right now. Map might help: {map_url}",
+    "I can't find {city}. Would you like to open the map? {map_url}",
+    "No results for {city}. Here's a map search you can use: {map_url}",
+]

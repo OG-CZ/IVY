@@ -10,4 +10,5 @@ pytest==8.4.2               # https://pypi.org/project/pytest/ -> my version pyt
 pvporcupine==3.0.5          # https://pypi.org/project/pvporcupine/ -> my version pvporcupine 3.0.5
 rapidfuzz==3.14.1           # https://pypi.org/project/RapidFuzz/ -> my version RapidFuzz 3.14.1
 opencv-python==4.12.0.88    # https://pypi.org/project/opencv-python/ -> my version opencv-python 4.12.0.88
-opencv-contrib-python==4.12.0.88 #https://pypi.org/project/opencv-contrib-python/ -> my version opencv-contrib-python 4.12.0.88
+opencv-contrib-python==4.12.0.88 # https://pypi.org/project/opencv-contrib-python/ -> my version opencv-contrib-python 4.12.0.88
+open-meteo==0.4.0           # https://pypi.org/project/open-meteo/ - my version open-meteo 0.4.0

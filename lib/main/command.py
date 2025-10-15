@@ -146,6 +146,7 @@ def take_command():
 # core logic for all commands
 @eel.expose
 def all_commands(message=1) -> str:
+    from lib.main.helper import is_weather_query
 
     if message == 1:
         query = take_command()
@@ -165,27 +166,46 @@ def all_commands(message=1) -> str:
         "place a call",
         "video call",
     ]
-    message_keywords = ["send message", "send a message", "message", "text"]
+    message_keywords = [
+        "send message",
+        "send a message",
+        "message",
+        "text",
+        "send text",
+        "send a text",
+        "send a text message",
+        "text message",
+        "send text message",
+    ]
 
+    time_date_keywords = ["time", "date", "city"]
     try:
+        q = (query or "").lower().strip()
         # if no voice
         if len(query) < 2:
             speak(random.choice(response.cannot_understand_user))
 
         # opening app or website
-        if "open" in query.lower():
+        if "open" in q:
             from lib.main.features import open_command
 
             open_command(query)
 
         # play video in youtube
-        elif "on youtube" in query.lower() or "in youtube" in query.lower():
+        elif "on youtube" in q or "in youtube" in q:
             from lib.main.features import play_youtube
 
             play_youtube(query)
 
-            # send message,phone call, video call to whatsapp
-        elif any(kw in query.lower() for kw in message_keywords + call_keywords):
+        # tweather, date, city
+
+        elif is_weather_query(query):
+            from lib.main.features import answer_weather_query
+
+            answer_weather_query(query)
+
+        # send message,phone call, video call to whatsapp
+        elif any(kw in q for kw in message_keywords + call_keywords):
             from lib.main.features import findContact, whatsApp
             import re
 
@@ -207,9 +227,7 @@ def all_commands(message=1) -> str:
                 message = ""
                 if any(kw in query.lower() for kw in message_keywords):
                     flag = "message"
-                    speak("what message to send")
-                    print("what message to send?")
-                    message = take_command()
+                    speak(random.choice(response.ask_message_prompt_user))
                 elif any(kw in query.lower() for kw in call_keywords):
                     if "video call" in query.lower():
                         flag = "video call"
@@ -223,7 +241,8 @@ def all_commands(message=1) -> str:
             else:
                 print("something went wrong in whatsapp command.py")
         else:
-            print(f"No command match found for: '{query}'")
+            print(f"Ignoring unknown query: {query!r}")
+            return
         # speak(f"I heard '{query}' but I don't know how to handle that command yet.")
 
     except Exception as e:

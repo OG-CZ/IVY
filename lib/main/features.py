@@ -18,9 +18,21 @@ import time
 import pyaudio
 import traceback
 import random
+import re
+import json
+import urllib.parse
+import urllib.request
+from lib.utils.location import detect_city_via_ip
 
 con = sqlite3.connect("./database/ivy.db")
 cursor = con.cursor()
+
+try:
+    import config
+
+    DEFAULT_CITY = getattr(config, "DEFAULT_CITY", None)
+except Exception:
+    DEFAULT_CITY = None
 
 
 # play assistant sound function
@@ -245,3 +257,91 @@ def whatsApp(mobile_no, message, flag, name):
     except Exception as e:
         print("Error sending WhatsApp message:", e)
         speak(random.choice(response.cannot_send_whatsapp_message))
+
+
+def _resolve_city_for_weather(query: str) -> str:
+    from lib.main.helper import extract_city_from_query
+
+    city = extract_city_from_query(query)
+    if city:
+        return city
+    info = detect_city_via_ip()
+    if info and info.get("label"):
+        return info["label"]
+
+    if DEFAULT_CITY:
+        return DEFAULT_CITY
+    return ""
+
+
+def _condition_matches(cond: str, is_sunny: bool, desc: str) -> bool:
+    d = (desc or "").lower()
+    if cond == "sunny":
+        return bool(is_sunny)
+    if cond == "rain":
+        return any(k in d for k in ("rain", "drizzle", "shower", "storm"))
+    if cond == "cloudy":
+        return any(k in d for k in ("cloud", "overcast"))
+    if cond == "windy":
+        return "wind" in d
+    if cond == "snow":
+        return "snow" in d
+    if cond == "storm":
+        return any(k in d for k in ("storm", "thunder"))
+    return False
+
+
+def answer_weather_query(query: str) -> None:
+
+    from lib.utils.weather import get_city_weather
+    from lib.main.helper import extract_condition_from_query
+    from lib.main.command import speak
+
+    city = _resolve_city_for_weather(query)
+    if not city:
+        speak("Which city should I check the weather for?")
+        return
+
+    data = get_city_weather(city)
+    if not data:
+        safe_city = (city or "your city").strip()
+        map_url = f"https://www.google.com/maps/search/{urllib.parse.quote(safe_city)}"
+        line = (
+            (
+                response.city_not_found_user
+                and (
+                    random.choice(response.city_not_found_user).format(
+                        city=safe_city, map_url=map_url
+                    )
+                )
+            )
+            if hasattr(response, "city_not_found_user")
+            else f"Sorry, I could not find details for {safe_city}."
+        )
+        speak(line)
+        return
+
+    name = data.get("city_name") or city
+    temp = data.get("temperature")
+    desc = data.get("weather_description") or ""
+    is_sunny = bool(data.get("is_sunny"))
+
+    cond = extract_condition_from_query(query)
+
+    if cond:
+        yes = _condition_matches(cond, is_sunny, desc)
+        if yes:
+            if temp is not None:
+                speak(f"Yes, it's {cond} in {name}. Around {temp} degrees.")
+            else:
+                speak(f"Yes, it's {cond} in {name}.")
+        else:
+            if temp is not None:
+                speak(f"No, it's {desc.lower()} in {name}. Around {temp} degrees.")
+            else:
+                speak(f"No, it's {desc.lower()} in {name}.")
+    else:
+        if temp is not None:
+            speak(f"In {name}, it is {temp} degrees and {desc}.")
+        else:
+            speak(f"In {name}, the weather is {desc}.")
