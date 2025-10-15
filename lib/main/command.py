@@ -212,7 +212,20 @@ def all_commands(message=1) -> str:
         "percent",
     ]
 
-    time_date_keywords = ["time", "date", "city"]
+    time_date_keywords = [
+        "time",
+        "date",
+        "day",
+        "today",
+        "current time",
+        "current date",
+        "what time",
+        "what date",
+        "now",
+        "clock",
+        "time in",
+        "date in",
+    ]
     try:
         q = (query or "").lower().strip()
         # if no voice
@@ -232,11 +245,16 @@ def all_commands(message=1) -> str:
             play_youtube(query)
 
         # tweather, date, city
-
         elif is_weather_query(query):
             from lib.main.features import answer_weather_query
 
             answer_weather_query(query)
+
+        # date, time, city
+        elif any(kw in q for kw in time_date_keywords):
+            from lib.main.features import get_time_date
+
+            speak(get_time_date(query))
 
         # math calculations
         elif any(kw in q for kw in math_keywords):

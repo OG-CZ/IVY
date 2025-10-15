@@ -456,3 +456,56 @@ def InsertContacts(Name, MobileNo, Email, City):
         (None, Name, MobileNo, Email, City),
     )
     con.commit()
+
+
+# getting time and date
+def get_time_date(query):
+    from lib.main.helper import extract_city_from_query
+    from lib.utils.weather import get_city_weather
+    from lib.utils.location import detect_city_via_ip
+    import datetime
+
+    import random
+    import lib.main.response as response
+
+    city = extract_city_from_query(query)
+    if city:
+        result = get_city_weather(city)
+        if result:
+            date = result["date"]
+            time_ = result["time"]
+            city_name = result["city_name"]
+            response_text = random.choice(response.city_time_success).format(
+                city=city_name, date=date, time=time_
+            )
+            print(response_text)
+            return response_text
+        else:
+            response_text = random.choice(response.city_time_fail).format(city=city)
+            print(response_text)
+            return response_text
+    try:
+        info = detect_city_via_ip()
+        if info and info.get("timezone"):
+            from zoneinfo import ZoneInfo
+
+            now = datetime.datetime.now(ZoneInfo(info["timezone"]))
+            city_label = info.get("label", "your location")
+            tz = info["timezone"]
+            date = now.strftime("%A, %B %d, %Y")
+            time_ = now.strftime("%I:%M %p")
+            response_text = random.choice(response.local_time_success).format(
+                city=city_label, date=date, time=time_, tz=tz
+            )
+            print(response_text)
+            return response_text
+    except Exception:
+        pass
+    now = datetime.datetime.now()
+    date = now.strftime("%A, %B %d, %Y")
+    time_ = now.strftime("%I:%M %p")
+    response_text = random.choice(response.system_time_success).format(
+        date=date, time=time_
+    )
+    print(response_text)
+    return response_text

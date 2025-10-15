@@ -1,3 +1,35 @@
+# responses for time/date queries
+city_time_success = [
+    "In {city}, it is {date} and the time is {time}.",
+    "Right now in {city}, it's {date} and the time is {time}.",
+    "The local time in {city} is {time} on {date}.",
+    "Currently in {city}, it's {time} on {date}.",
+    "{city}: {date}, {time} local time.",
+]
+
+city_time_fail = [
+    "Sorry, I couldn't get the local time for {city}.",
+    "I wasn't able to find the time for {city}.",
+    "I couldn't retrieve the time for {city} right now.",
+    "No time information available for {city}.",
+    "I can't get the current time for {city} at the moment.",
+]
+
+local_time_success = [
+    "In {city}, it is {date} and the time is {time} ({tz}).",
+    "Right now in {city}, it's {date} and the time is {time} ({tz}).",
+    "The local time here in {city} is {time} on {date} ({tz}).",
+    "Currently in {city}, it's {time} on {date} ({tz}).",
+    "{city}: {date}, {time} local time ({tz}).",
+]
+
+system_time_success = [
+    "Today is {date} and the time is {time}.",
+    "It's {date} and the time is {time} right now.",
+    "The current date is {date} and the time is {time}.",
+    "Right now, it's {time} on {date}.",
+    "{date}, {time} local system time.",
+]
 # negative response for query that is not understandable
 cannot_understand_user = [
     "Sorry, I didn't catch that",
