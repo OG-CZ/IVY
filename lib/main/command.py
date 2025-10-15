@@ -272,65 +272,25 @@ def all_commands(message=1) -> str:
         if len(query) < 2:
             speak(random.choice(response.cannot_understand_user))
 
-        # ===== 1. CASUAL CONVERSATION (greetings, small talk, moods) =====
-        # Check for greetings, how are you, thank you, goodbye, compliments, moods
-        if any(
-            word in q
-            for word in [
-                "hello",
-                "hi",
-                "hey",
-                "morning",
-                "afternoon",
-                "evening",
-                "night",
-                "how are you",
-                "how're you",
-                "thank",
-                "thanks",
-                "bye",
-                "goodbye",
-                "awesome",
-                "amazing",
-                "love you",
-                "sad",
-                "happy",
-                "bored",
-                "excited",
-                "who are you",
-                "what are you",
-                "what can you",
-            ]
-        ):
-            from lib.conversations.casual import route_conversation
+        # # ===== 1. CASUAL CONVERSATION (greetings, small talk, moods) =====
+        # # Check for greetings, how are you, thank you, goodbye, compliments, moods
+        # if any(word in q for word in casual_keywords):
+        #     from lib.conversations.casual import route_conversation
 
-            casual_response = route_conversation(query)
-            if casual_response:
-                speak(casual_response)
-                return
+        #     casual_response = route_conversation(query)
+        #     if casual_response:
+        #         speak(casual_response)
+        #         return
 
-        # ===== 2. FUN QUERIES (jokes, riddles, facts, games) =====
-        elif any(
-            kw in q
-            for kw in [
-                "joke",
-                "riddle",
-                "fact",
-                "play",
-                "game",
-                "fun",
-                "laugh",
-                "make me smile",
-                "entertain",
-            ]
-        ):
-            from lib.conversations.fun import handle_fun_query
+        # # ===== 2. FUN QUERIES (jokes, riddles, facts, games) =====
+        # elif any(kw in q for kw in joke_keywords):
+        #     from lib.conversations.fun import handle_fun_query
 
-            fun_response = handle_fun_query(query)
-            speak(fun_response)
-            return
+        #     fun_response = handle_fun_query(query)
+        #     speak(fun_response)
+        #     return
 
-        # Fun queries are handled by the conversation router (casual/fun)
+        # # Fun queries are handled by the conversation router (casual/fun)
 
         # ===== 3. OPEN COMMAND =====
         if "open" in q:
@@ -397,6 +357,7 @@ def all_commands(message=1) -> str:
                 if any(kw in query.lower() for kw in message_keywords):
                     flag = "message"
                     speak(random.choice(response.ask_message_prompt_user))
+                    message = take_command()
                 elif any(kw in query.lower() for kw in call_keywords):
                     if "video call" in query.lower():
                         flag = "video call"
