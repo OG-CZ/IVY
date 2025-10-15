@@ -30,3 +30,12 @@ COUNTRY_CODES = {
     "FR": "+33",  # France
     # Add more as needed
 }
+
+# WEATHER API USING OPEN METEO
+GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search"
+FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+
+# IP Api
+IP_API = "http://ip-api.com/json/?fields=status,message,city,regionName,country,lat,lon,timezone,query"
+
+DEFAULT_CITY = "singapore"
