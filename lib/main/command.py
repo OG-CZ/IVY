@@ -32,10 +32,8 @@ def speak(text):
 
     engine = pyttsx3.init()
 
-    # speed of talk
     engine.setProperty("rate", 174)
 
-    # voice choose
     voices = engine.getProperty("voices")
     engine.setProperty("voice", voices[1].id)
 
@@ -43,6 +41,25 @@ def speak(text):
     eel.receiverText(text)
 
     engine.say(text)
+    engine.runAndWait()
+
+
+def speak_with_display(display_text, speak_text):
+    """
+    Display one message on screen, speak a different message via voice.
+    Used when you want to show formatted numbers but speak words.
+    """
+    engine = pyttsx3.init()
+
+    engine.setProperty("rate", 174)
+
+    voices = engine.getProperty("voices")
+    engine.setProperty("voice", voices[1].id)
+
+    eel.DisplayMessage(display_text)
+    eel.receiverText(speak_text)
+
+    engine.say(speak_text)
     engine.runAndWait()
 
 
@@ -178,6 +195,23 @@ def all_commands(message=1) -> str:
         "send text message",
     ]
 
+    math_keywords = [
+        "calculate",
+        "what is",
+        "what's",
+        "plus",
+        "minus",
+        "times",
+        "multiply",
+        "divide",
+        "divided",
+        "add",
+        "subtract",
+        "power",
+        "square root",
+        "percent",
+    ]
+
     time_date_keywords = ["time", "date", "city"]
     try:
         q = (query or "").lower().strip()
@@ -203,6 +237,23 @@ def all_commands(message=1) -> str:
             from lib.main.features import answer_weather_query
 
             answer_weather_query(query)
+
+        # math calculations
+        elif any(kw in q for kw in math_keywords):
+            from lib.math.calculator import calculate
+
+            result = calculate(query)
+            if result["success"]:
+                speak_with_display(
+                    f"The answer is {result['result_display']}",
+                    f"The answer is {result['result_words']}",
+                )
+            else:
+                speak(
+                    random.choice(response.cannot_calculate).format(
+                        error=result["error"]
+                    )
+                )
 
         # send message,phone call, video call to whatsapp
         elif any(kw in q for kw in message_keywords + call_keywords):
