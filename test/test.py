@@ -32,7 +32,7 @@ def hotword():
         print("Listening for hotword...")
 
         last_detected = 0
-        cooldown = 3  # seconds to wait before re-triggering
+        cooldown = 3
 
         while True:
             pcm = audio_stream.read(porcupine.frame_length, exception_on_overflow=False)
@@ -44,7 +44,6 @@ def hotword():
                 if now - last_detected > cooldown:
                     print("Hotword detected!")
 
-                    # simulate a shortcut key (example: Win + J)
                     pyautogui.keyDown("win")
                     pyautogui.press("j")
                     pyautogui.keyUp("win")

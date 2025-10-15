@@ -2,7 +2,6 @@ import pytest
 from unittest.mock import patch, MagicMock
 import random
 
-# Import your function (adjust the import path to match your project)
 from lib.main.features import *
 
 
@@ -36,9 +35,8 @@ def test_open_command_system_app(
 ):
     """Test when the system command exists in sys_command table"""
 
-    # Mock sys_command table result
     mock_db_cursor.fetchall.side_effect = [
-        [("C:\\Program Files\\App\\app.exe",)],  # sys_command result
+        [("C:\\Program Files\\App\\app.exe",)],
     ]
 
     monkeypatch.setattr("lib.main.features.cursor", mock_db_cursor)
@@ -65,10 +63,9 @@ def test_open_command_web(
 ):
     """Test when the app is found in web_command table"""
 
-    # First query returns no sys_command, second query returns web_command
     mock_db_cursor.fetchall.side_effect = [
-        [],  # sys_command
-        [("https://example.com",)],  # web_command
+        [],
+        [("https://example.com",)],
     ]
 
     monkeypatch.setattr("lib.main.features.cursor", mock_db_cursor)
@@ -87,7 +84,7 @@ def test_open_command_fallback(
 ):
     """Test when app not found in both sys_command and web_command"""
 
-    mock_db_cursor.fetchall.side_effect = [[], []]  # sys_command  # web_command
+    mock_db_cursor.fetchall.side_effect = [[], []]
 
     monkeypatch.setattr("lib.main.features.cursor", mock_db_cursor)
     monkeypatch.setattr("lib.main.features.response", mock_response)

@@ -12,3 +12,5 @@ rapidfuzz==3.14.1           # https://pypi.org/project/RapidFuzz/ -> my version 
 opencv-python==4.12.0.88    # https://pypi.org/project/opencv-python/ -> my version opencv-python 4.12.0.88
 opencv-contrib-python==4.12.0.88 # https://pypi.org/project/opencv-contrib-python/ -> my version opencv-contrib-python 4.12.0.88
 open-meteo==0.4.0           # https://pypi.org/project/open-meteo/ - my version open-meteo 0.4.0
+asteval==1.0.6
+text2num==1.4.0
