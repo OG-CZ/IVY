@@ -82,6 +82,5 @@ $(document).ready(function () {
     setTimeout(function () {
       $("#Oval").attr("hidden", false);
     }, 1000);
-    // animateOvalContainer();
   }
 });

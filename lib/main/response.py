@@ -59,7 +59,6 @@ welcome_back_user = [
     "Welcome back! Ivy is here to assist you 24/7 and 7 days a week",
     "Good to see you again. How can I help you today?",
     "Welcome back! Ready when you are",
-    "Hi again! Let's get started",
 ]
 
 ask_message_prompt_user = [

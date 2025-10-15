@@ -22,10 +22,8 @@
     />
 
     <!-- lottie -->
-    <script
-      type="module"
-      src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
-    ></script>
+    <script src="https://unpkg.com/@dotlottie/web-component@latest/dist/dotlottie-wc.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <!-- own css -->
     <link rel="stylesheet" href="css/style.css" />
@@ -381,32 +379,32 @@
               </div>
 
               <div id="FaceAuth" class="mb-4" hidden>
-                <dotlottie-wc
-                  src="https://lottie.host/d66e5d8f-83d8-4a7e-8fce-9e8a560a55d6/Xc7gJQiFWD.lottie"
+                <lottie-player
+                  src="assets/animations/face-scan.json"
                   background="transparent"
                   speed="1"
                   style="width: 300px; height: 300px"
                   loop
                   autoplay
-                ></dotlottie-wc>
+                ></lottie-player>
               </div>
 
               <div id="FaceAuthSuccess" class="mb-4" hidden>
-                <dotlottie-wc
-                  src="https://lottie.host/610f9c36-61d8-47d8-9cf8-ba9c6830c000/QdBa7GIgZI.lottie"
+                <lottie-player
+                  src="assets/animations/check-success.json"
                   background="transparent"
                   speed="1"
                   style="width: 300px; height: 300px"
                   loop
                   autoplay
-                ></dotlottie-wc>
+                ></lottie-player>
               </div>
               <div id="HelloGreet" class="mb-4" hidden>
                 <lottie-player
-                  src="https://lottie.host/f60d18d4-5199-412c-b687-e5e63ae38f75/CoqjMcJIx0.json"
+                  src="assets/animations/hand-wave.json"
                   background="transparent"
                   speed="1"
-                  style="width: 300px; height: 300px"
+                  style="width: 350px; height: 350px"
                   loop
                   autoplay
                 ></lottie-player>
@@ -507,7 +505,8 @@
           </div>
         </div>
       </section>
-    </div>
+
+     
 
     <!-- Chat Box -->
     <div
@@ -563,7 +562,8 @@
     ></script>
 
     <!-- main js -->
-    <script src="eel.js?v=1"></script>
+    +
+    <script src="/eel.js?v=1"></script>
     <script src="js/controller.js?v=1"></script>
     <script src="js/main.js?v=1"></script>
   </body>

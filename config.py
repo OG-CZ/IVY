@@ -39,3 +39,13 @@ FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
 IP_API = "http://ip-api.com/json/?fields=status,message,city,regionName,country,lat,lon,timezone,query"
 
 DEFAULT_CITY = "singapore"
+
+WEATHER_ANIM = {
+    "sunny": "assets/animations/weather/sunny.json",
+    "rain": "assets/animations/weather/rain1.json",
+    "cloudy": "assets/animations/weather/cloudy.json",  # fixed typo
+    "storm": "assets/animations/weather/storm.json",
+    "snow": "assets/animations/weather/snow.json",
+    "fog": "assets/animations/weather/fog.json",
+    "default": "assets/animations/weather/sunny.json",
+}
