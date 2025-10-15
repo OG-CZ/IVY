@@ -15,6 +15,97 @@ import lib.main.response as response
 # For Mac, If you face error related to "pyobjc" when running the `init()` method :
 # Install 9.0.1 version of pyobjc : "pip install pyobjc>=9.0.1"
 
+call_keywords = [
+    "call",
+    "phone call",
+    "make a call",
+    "dial",
+    "ring",
+    "place a call",
+    "video call",
+]
+message_keywords = [
+    "send message",
+    "send a message",
+    "message",
+    "text",
+    "send text",
+    "send a text",
+    "send a text message",
+    "text message",
+    "send text message",
+]
+
+math_keywords = [
+    "calculate",
+    "what is",
+    "what's",
+    "plus",
+    "minus",
+    "times",
+    "multiply",
+    "divide",
+    "divided",
+    "add",
+    "subtract",
+    "power",
+    "square root",
+    "percent",
+]
+
+time_date_keywords = [
+    "time",
+    "date",
+    "day",
+    "today",
+    "current time",
+    "current date",
+    "what time",
+    "what date",
+    "now",
+    "clock",
+    "time in",
+    "date in",
+]
+
+casual_keywords = [
+    "hello",
+    "hi",
+    "hey",
+    "morning",
+    "afternoon",
+    "evening",
+    "night",
+    "how are you",
+    "how're you",
+    "thank",
+    "thanks",
+    "bye",
+    "goodbye",
+    "awesome",
+    "amazing",
+    "love you",
+    "sad",
+    "happy",
+    "bored",
+    "excited",
+    "who are you",
+    "what are you",
+    "what can you",
+]
+
+joke_keywords = [
+    "joke",
+    "riddle",
+    "fact",
+    "play",
+    "game",
+    "fun",
+    "laugh",
+    "make me smile",
+    "entertain",
+]
+
 
 # load model
 if os.path.exists(config.MODEL_DIR):
@@ -174,89 +265,98 @@ def all_commands(message=1) -> str:
         query = message
         eel.senderText(query)
 
-    call_keywords = [
-        "call",
-        "phone call",
-        "make a call",
-        "dial",
-        "ring",
-        "place a call",
-        "video call",
-    ]
-    message_keywords = [
-        "send message",
-        "send a message",
-        "message",
-        "text",
-        "send text",
-        "send a text",
-        "send a text message",
-        "text message",
-        "send text message",
-    ]
-
-    math_keywords = [
-        "calculate",
-        "what is",
-        "what's",
-        "plus",
-        "minus",
-        "times",
-        "multiply",
-        "divide",
-        "divided",
-        "add",
-        "subtract",
-        "power",
-        "square root",
-        "percent",
-    ]
-
-    time_date_keywords = [
-        "time",
-        "date",
-        "day",
-        "today",
-        "current time",
-        "current date",
-        "what time",
-        "what date",
-        "now",
-        "clock",
-        "time in",
-        "date in",
-    ]
     try:
         q = (query or "").lower().strip()
+
         # if no voice
         if len(query) < 2:
             speak(random.choice(response.cannot_understand_user))
 
-        # opening app or website
+        # ===== 1. CASUAL CONVERSATION (greetings, small talk, moods) =====
+        # Check for greetings, how are you, thank you, goodbye, compliments, moods
+        if any(
+            word in q
+            for word in [
+                "hello",
+                "hi",
+                "hey",
+                "morning",
+                "afternoon",
+                "evening",
+                "night",
+                "how are you",
+                "how're you",
+                "thank",
+                "thanks",
+                "bye",
+                "goodbye",
+                "awesome",
+                "amazing",
+                "love you",
+                "sad",
+                "happy",
+                "bored",
+                "excited",
+                "who are you",
+                "what are you",
+                "what can you",
+            ]
+        ):
+            from lib.conversations.casual import route_conversation
+
+            casual_response = route_conversation(query)
+            if casual_response:
+                speak(casual_response)
+                return
+
+        # ===== 2. FUN QUERIES (jokes, riddles, facts, games) =====
+        elif any(
+            kw in q
+            for kw in [
+                "joke",
+                "riddle",
+                "fact",
+                "play",
+                "game",
+                "fun",
+                "laugh",
+                "make me smile",
+                "entertain",
+            ]
+        ):
+            from lib.conversations.fun import handle_fun_query
+
+            fun_response = handle_fun_query(query)
+            speak(fun_response)
+            return
+
+        # Fun queries are handled by the conversation router (casual/fun)
+
+        # ===== 3. OPEN COMMAND =====
         if "open" in q:
             from lib.main.features import open_command
 
             open_command(query)
 
-        # play video in youtube
+        # ===== 4. SEARCH YOUTUBE =====
         elif "on youtube" in q or "in youtube" in q:
             from lib.main.features import play_youtube
 
             play_youtube(query)
 
-        # tweather, date, city
+        # ===== 5. WEATHER =====
         elif is_weather_query(query):
             from lib.main.features import answer_weather_query
 
             answer_weather_query(query)
 
-        # date, time, city
+        ## ===== 6. TIME & DATE =====
         elif any(kw in q for kw in time_date_keywords):
             from lib.main.features import get_time_date
 
             speak(get_time_date(query))
 
-        # math calculations
+        # ===== 7. MATH CALCULATIONS =====
         elif any(kw in q for kw in math_keywords):
             from lib.math.calculator import calculate
 
@@ -273,7 +373,7 @@ def all_commands(message=1) -> str:
                     )
                 )
 
-        # send message,phone call, video call to whatsapp
+        # ===== 8. WHATSAPP =====
         elif any(kw in q for kw in message_keywords + call_keywords):
             from lib.main.features import findContact, whatsApp
             import re
