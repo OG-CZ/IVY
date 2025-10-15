@@ -231,7 +231,7 @@ body {
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: none;
   border-right: 1px solid rgba(31, 170, 38, 0.6);
-  box-shadow: 5px 0 25px rgba(31, 170, 38, 0.5); /* green glow on right only */
+  box-shadow: 5px 0 25px rgba(31, 170, 38, 0.5);
 }
 
 /* Chat history area */
@@ -549,7 +549,6 @@ svg {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Placeholder styling - 70% white opacity */
 .glassy-form::placeholder {
   color: rgba(255, 255, 255, 0.7);
   opacity: 1;
@@ -663,7 +662,6 @@ svg {
   color: white;
 }
 
-/* Table Styles - Transparent with bottom borders only */
 .table {
   color: white;
   background-color: transparent !important;
@@ -696,32 +694,26 @@ svg {
   background-color: rgba(0, 255, 8, 0.08) !important;
 }
 
-/* Table Scroll Property */
-
 .table-scroll {
   height: 270px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 5px;
   height: 40px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   border-radius: 20px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #272727;
   border-radius: 20px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #353535;
 }
