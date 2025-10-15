@@ -66,3 +66,9 @@ def whatsapp_add_on_db(name, number, email="null"):
 
 
 # script here
+
+# Adding personal info table
+query = "CREATE TABLE IF NOT EXISTS info(name VARCHAR(100), designation VARCHAR(50),mobileno VARCHAR(40), email VARCHAR(200), city VARCHAR(300))"
+cursor.execute(query)
+
+#### __SETTINGS__
