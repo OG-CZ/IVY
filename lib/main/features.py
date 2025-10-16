@@ -21,7 +21,6 @@ import random
 import re
 import json
 import urllib.parse
-import urllib.request
 from lib.utils.location import detect_city_via_ip
 
 con = sqlite3.connect("./database/ivy.db")
@@ -520,6 +519,7 @@ def extract_search_query(command: str):
 
     patterns = [
         r"search\s+(?:for\s+)?(.+?)\s+on\s+google",
+        r"search\s+(.+?)\s+on\s+google",
         r"search\s+google\s+for\s+(.+)",
         r"look\s+up\s+(.+?)\s+(?:on|using)\s+google",
         r"find\s+(?:out\s+)?(.+?)\s+on\s+google",
@@ -558,7 +558,172 @@ def google_search(command: str):
     query = extract_search_query(command)
 
     if query:
-        speak(f"Searching Google for {query}")
+        speak(f"Searching {query} on Google")
         webbrowser.open(f"https://www.google.com/search?q={query}")
     else:
-        speak("I couldn’t understand your Google search. Try saying it again.")
+        import response
+
+        speak(random.choice(response.google_search_failures))
+
+
+def get_news(limit=5):
+    import requests
+
+    """
+    Fetch top headlines from NewsAPI (times of india source used in your prior code).
+    Returns list of articles (may be empty list on failure).
+    """
+    try:
+        url = f"http://newsapi.org/v2/top-headlines?sources=the-times-of-india&apiKey={config.NEWS_API_KEY}"
+        resp = requests.get(url, timeout=8)
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("articles", [])[:limit]
+    except Exception as e:
+        print("get_news error:", e)
+        return []
+
+
+def get_random_news_for_speech():
+    from datetime import datetime
+
+    """
+    Pick one random article (from up to 5) and return a short, conversational string
+    suitable for TTS. Never raises — returns friendly fallback on error.
+    """
+    try:
+        articles = get_news(limit=5)
+        if not articles:
+            return "I couldn't fetch the latest news right now. Try again in a bit."
+
+        article = random.choice(articles)
+        title = article.get("title") or "Untitled headline"
+        description = article.get("description") or ""
+        # trim description to first sentence if long
+        if len(description) > 140:
+            description = description.split(".")[0].strip()
+            if description and not description.endswith("."):
+                description += "."
+
+        published = article.get("publishedAt", "")
+        try:
+            pub_time = datetime.fromisoformat(published.replace("Z", "+00:00"))
+            time_str = pub_time.strftime("%B %d")
+        except Exception:
+            time_str = "recently"
+
+        openers = [
+            "Here’s something from today’s news.",
+            "Quick news update.",
+            "Here’s a headline you might like.",
+            "This just in.",
+        ]
+        opener = random.choice(openers)
+
+        desc_fragment = f" {description}" if description else ""
+        speak_text = f"{opener} {title}.{desc_fragment} It was published {time_str}."
+
+        if len(speak_text.split()) > 40:
+            speak_text = f"{opener} {title}. It was published {time_str}."
+
+        return speak_text
+    except Exception as e:
+        print("get_random_news_for_speech error:", e)
+        return "I had trouble preparing the news just now."
+
+
+@eel.expose
+def repeat_after_me():
+    from lib.main.command import take_command_without_display, speak
+    from lib.main import response
+    import random
+
+    speak(random.choice(response.copy_me_response))
+    phrase = take_command_without_display()
+
+    if phrase and phrase.strip():
+        print(f"You said: {phrase}")
+        speak(phrase)
+    else:
+        print("Nothing heard.")
+        speak(random.choice(response.copy_me_failed))
+
+
+def get_system_status(query):
+    from lib.main.helper import normalize_units
+    from lib.main.command import take_command, speak_with_display
+    from lib.utils.system_info import (
+        get_cpu_usage,
+        get_memory_usage,
+        get_battery_level,
+        get_disk_usage,
+        get_system_summary,
+    )
+
+    query = query.lower()
+
+    affirmatives = [
+        "yes",
+        "sure",
+        "go",
+        "fine",
+        "good",
+        "let's go",
+        "lets go",
+        "give me",
+        "okay",
+        "ok",
+        "why not",
+        "try",
+        "can you",
+        "do it",
+        "proceed",
+        "yep",
+        "yeah",
+    ]
+
+    try:
+        if "battery" in query:
+            speak_with_display(
+                get_battery_level(), normalize_units(get_battery_level())
+            )
+        elif "cpu" in query or "processor" in query:
+            speak_with_display(get_cpu_usage(), normalize_units(get_cpu_usage()))
+        elif "ram" in query or "memory" in query:
+            speak_with_display(get_memory_usage(), normalize_units(get_memory_usage()))
+        elif "disk" in query or "storage" in query:
+            speak_with_display(get_disk_usage(), normalize_units(get_disk_usage()))
+        elif "system" in query or "performance" in query:
+            speak_with_display(
+                get_system_summary(), normalize_units(get_system_summary())
+            )
+        else:
+            speak(
+                "Would you like to get the battery, cpu, ram, disk, and system information?"
+            )
+            r = take_command()
+            print(r)
+            if r and any(word in r.lower() for word in affirmatives):
+                speak_with_display(
+                    get_system_summary(), normalize_units(get_system_summary())
+                )
+            else:
+                ...
+                # speak(random.choice(response.cancel_responses))
+    except Exception as e:
+        print("something went wrong", e)
+
+
+def wikipedia_search(topic):
+    import wikipedia as wp
+    from lib.main.command import speak
+    from lib.main import response
+
+    try:
+
+        res = wp.summary(topic, sentences=2)
+        speak(res)
+    except Exception as e:
+
+        print("error:", e)
+        speak(random.choice(response.cannot_find_wikipedia))

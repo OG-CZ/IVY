@@ -106,6 +106,56 @@ joke_keywords = [
     "entertain",
 ]
 
+news_keywords = [
+    "news",
+    "headlines",
+    "what's in the news",
+    "what is in the news",
+    "latest news",
+    "tell me the news",
+    "any news",
+    "news flash",
+    "news update",
+    "headline",
+]
+
+copy_me_keywords = [
+    "repeat after me",
+    "repeat what i say",
+    "repeat on waht im saying",
+    "repeat what i said",
+    "copy me",
+    "do what i say",
+    "copy my words",
+    "copy the words that came from my mouth",
+    "talk like me",
+    "mimic me",
+]
+
+system_keywords = [
+    "cpu",
+    "processor",
+    "ram",
+    "memory",
+    "storage",
+    "disk",
+    "battery",
+    "performance",
+    "system status",
+    "system info",
+    "system information",
+    "system stats",
+    "system status",
+    "device status",
+    "device info",
+    "device information",
+    "check my device",
+    "check my system",
+    "check my hardware",
+    "check hardware",
+    "check device",
+    "check system",
+]
 
 # load model
 if os.path.exists(config.MODEL_DIR):
@@ -251,6 +301,17 @@ def take_command():
     return query
 
 
+def take_command_without_display():
+
+    file = record_audio()
+    query = transcribe_audio(file)
+
+    sleep_time = min(max(2, 0.4 * len(query.split())), 6)
+    time.sleep(sleep_time)
+
+    return query
+
+
 # core logic for all commands
 @eel.expose
 def all_commands(message=1) -> str:
@@ -269,7 +330,9 @@ def all_commands(message=1) -> str:
         q = (query or "").lower().strip()
 
         # if no voice
-        if len(query) < 3:
+        if len(query) < 2:
+            import response
+
             speak(random.choice(response.cannot_understand_user))
             return
 
@@ -321,11 +384,51 @@ def all_commands(message=1) -> str:
                     speak("Okay, cancelled Google search.")
             return
 
+        # WIKIPEDIA
+        if (
+            "wikipedia" in q
+            and not is_weather_query(query)
+            and not is_youtube_query(query)
+        ):
+            from lib.main.features import wikipedia_search
+
+            wikipedia_search(query)
+
+        # LET IVY REPEAT YOUR WORDS
+        if any(kw in q for kw in copy_me_keywords):
+            from lib.main.features import repeat_after_me
+
+            repeat_after_me()
+            return
+
+        # GET SYSTEM INFO
+        if any(kw in q for kw in system_keywords):
+            from lib.main.features import get_system_status
+
+            get_system_status(query)
+            return
+
         # TIME & DATE
         if any(kw in q for kw in time_date_keywords):
             from lib.main.features import get_time_date
 
             speak(get_time_date(query))
+            return
+
+        # GET SOME NEWS
+        if any(kw in q for kw in news_keywords) and not (
+            "youtube" in q or "google" in q
+        ):
+            from lib.main.features import get_random_news_for_speech
+
+            try:
+                speak(get_random_news_for_speech())
+            except Exception as e:
+                import response
+
+                print("Error while handling news command:", e)
+                traceback.print_exc()
+                speak(random.choice(response.news_fetch_failures))
             return
 
         # MATH CALCULATIONS

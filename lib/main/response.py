@@ -125,10 +125,63 @@ cannot_calculate = [
 
 error_in_allcommands = [
     "Oops, something went wrong on my end. Let's try that again!",
-    "Unexpected error, I'm sorry we can try again",
+    "Unexpected error, I'm sorry, try again",
     "Sorry, there was a I.V.Y. error, pleaste try again later",
     "Ivy will fix herself shortly, I.V.Y. system errored, my apologies for this"
     "It appears that I.V.Y. had a issue, please try again..."
     "I.V.Y. system malfunction, id: 8-4f6-9e6a-dasw5bc2",
     "Ivy Error id: 83196b-f063-4ff6-9e6a",
+]
+
+google_search_failures = [
+    "I couldn't understand your Google search. Could you say it again?",
+    "Sorry, I didn't catch that search. Please try rephrasing it",
+    "Hmm, I'm not sure what you want me to look up. Can you say it again?",
+    "I couldn't parse that search query. Try asking differently, please",
+    "Sorry, I didn't understand the search. Could you repeat it?",
+    "I’m not sure what to search for. Please tell me what you'd like me to look up",
+    "That search wasn't clear to me. Can you try saying it another way?",
+    "I couldn't get the search query. Mind repeating it?",
+    "I'm having trouble understanding that search. Could you say it again more simply?",
+    "I didn't understand your Google search. Can you try one more time?",
+]
+
+news_fetch_failures = [
+    "Sorry, I couldn't get the news right now. Please try again in a moment",
+    "I’m having trouble fetching the news. Try again shortly",
+    "I can’t reach the news service at the moment. Please try later",
+    "Oops — I couldn't load the headlines. Would you like me to try again?",
+    "I couldn't get the latest news just now. Check your connection or try again",
+    "The news feed is unavailable right now. I'll try again in a bit",
+    "Sorry, I'm unable to fetch news at the moment. Please try again soon",
+    "I couldn't retrieve today's headlines. Want me to retry?",
+    "News isn't loading right now. Please give me a moment and try again",
+    "I’m having trouble connecting to the news source. Please try again later",
+]
+
+
+copy_me_response = [
+    "Got it, talk now",
+    "Sure, go speak now",
+    "Repeating after you",
+    "Alright, i will listen carefully.",
+]
+
+copy_me_failed = [
+    "I didn’t catch that. Try again, please",
+    "Sorry, I didn’t catch that. Could you say it again?",
+    "I couldn't hear you clearly. Please repeat",
+    "Hmm, I missed that. Can you say it once more?",
+    "I didn't get that. Could you repeat it, please?",
+    "I’m not hearing you clearly. Try saying that again",
+    "Pardon, I didn't catch that. Could you repeat?",
+    "I didn't catch that last part. Please try again",
+    "I couldn't hear that. Can you speak up and repeat?",
+    "I missed what you said. Please try one more time",
+]
+
+cannot_find_wikipedia = [
+    "I couldn't find any of that in Wikipedia ",
+    "There doesn't appear to be a Wikipedia page for that",
+    "Wikipedia appears to be unavailable right now",
 ]

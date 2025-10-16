@@ -257,3 +257,30 @@ def extract_condition_from_query(text: str) -> str | None:
     if re.search(r"\b(storm|stormy|thunder)\b", q):
         return "storm"
     return None
+
+
+def normalize_units(text: str) -> str:
+    import re
+
+    unit_map = {
+        "B": " bytes",
+        "KB": " kilobytes",
+        "MB": " megabytes",
+        "GB": " gigs",
+        "TB": " terabytes",
+        "PB": " petabytes",
+    }
+
+    text = re.sub(
+        r"(?i)(\d+(?:\.\d+)?)\s*(b|kb|mb|gb|tb|pb)\b",
+        lambda m: f"{m.group(1)}{unit_map[m.group(2).upper()]}",
+        text,
+    )
+
+    text = re.sub(
+        r"(?i)\b(b|kb|mb|gb|tb|pb)\b",
+        lambda m: unit_map[m.group(1).upper()],
+        text,
+    )
+
+    return text
