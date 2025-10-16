@@ -15,3 +15,6 @@ asteval==1.0.6
 text2num==1.4.0
 requests==2.32.5
 geopy==2.4.1
+newsapi-python==0.2.7
+psutil==7.1.0
+wikipedia==1.4.0
