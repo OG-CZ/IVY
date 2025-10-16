@@ -254,7 +254,7 @@ def take_command():
 # core logic for all commands
 @eel.expose
 def all_commands(message=1) -> str:
-    from lib.main.helper import is_weather_query
+    from lib.main.helper import is_weather_query, is_youtube_query
 
     if message == 1:
         query = take_command()
@@ -269,55 +269,43 @@ def all_commands(message=1) -> str:
         q = (query or "").lower().strip()
 
         # if no voice
-        if len(query) < 2:
+        if len(query) < 3:
             speak(random.choice(response.cannot_understand_user))
+            return
 
-        # # ===== 1. CASUAL CONVERSATION (greetings, small talk, moods) =====
-        # # Check for greetings, how are you, thank you, goodbye, compliments, moods
-        # if any(word in q for word in casual_keywords):
-        #     from lib.conversations.casual import route_conversation
+        # ===== PRIORITY 1: CORE COMMANDS =====
 
-        #     casual_response = route_conversation(query)
-        #     if casual_response:
-        #         speak(casual_response)
-        #         return
-
-        # # ===== 2. FUN QUERIES (jokes, riddles, facts, games) =====
-        # elif any(kw in q for kw in joke_keywords):
-        #     from lib.conversations.fun import handle_fun_query
-
-        #     fun_response = handle_fun_query(query)
-        #     speak(fun_response)
-        #     return
-
-        # # Fun queries are handled by the conversation router (casual/fun)
-
-        # ===== 3. OPEN COMMAND =====
-        if "open" in q:
+        # 1. OPEN COMMAND - Must check first
+        if "open" in q and not is_youtube_query(query):
+            # Make sure it's not "open [something] on youtube"
             from lib.main.features import open_command
 
             open_command(query)
+            return
 
-        # ===== 4. SEARCH YOUTUBE =====
-        elif "on youtube" in q or "in youtube" in q:
+        # 2. YOUTUBE - Flexible detection with intelligent title extraction
+        if is_youtube_query(query):
             from lib.main.features import play_youtube
 
             play_youtube(query)
+            return
 
-        # ===== 5. WEATHER =====
-        elif is_weather_query(query):
+        # 3. WEATHER
+        if is_weather_query(query):
             from lib.main.features import answer_weather_query
 
             answer_weather_query(query)
+            return
 
-        ## ===== 6. TIME & DATE =====
-        elif any(kw in q for kw in time_date_keywords):
+        # 4. TIME & DATE
+        if any(kw in q for kw in time_date_keywords):
             from lib.main.features import get_time_date
 
             speak(get_time_date(query))
+            return
 
-        # ===== 7. MATH CALCULATIONS =====
-        elif any(kw in q for kw in math_keywords):
+        # 5. MATH CALCULATIONS
+        if any(kw in q for kw in math_keywords):
             from lib.math.calculator import calculate
 
             result = calculate(query)
@@ -332,13 +320,13 @@ def all_commands(message=1) -> str:
                         error=result["error"]
                     )
                 )
+            return
 
-        # ===== 8. WHATSAPP =====
-        elif any(kw in q for kw in message_keywords + call_keywords):
+        # 6. WHATSAPP
+        if any(kw in q for kw in message_keywords + call_keywords):
             from lib.main.features import findContact, whatsApp
             import re
 
-            # Clean the query to extract contact name
             cleaned_query = re.sub(r"[^\w\s]", "", query)
             cleaned_query = re.sub(
                 r"\b("
@@ -370,16 +358,34 @@ def all_commands(message=1) -> str:
                 whatsApp(contact_no, message if flag == "message" else "", flag, name)
             else:
                 print("something went wrong in whatsapp command.py")
-        else:
-            print(f"Ignoring unknown query: {query!r}")
             return
-        # speak(f"I heard '{query}' but I don't know how to handle that command yet.")
+
+        # ===== PRIORITY 2: CONVERSATION HANDLING =====
+
+        from lib.conversations.router import route_conversation
+
+        conversation_response = route_conversation(query)
+        if conversation_response:
+            speak(conversation_response)
+            return
+
+        # # ===== PRIORITY 3: UNKNOWN QUERY =====
+
+        # friendly_responses = [
+        #     "Hmm, I'm not sure how to help with that. Want to try something else?",
+        #     "I didn't quite catch that. Could you rephrase it?",
+        #     "That's a new one for me! Try asking me to open an app, check the weather, or tell you a joke!",
+        # ]
+        # speak(random.choice(friendly_responses))
+        # print(f"Unknown query: {query!r}")
 
     except Exception as e:
         print("Error in all_commands:", e)
         traceback.print_exc()
+        speak("Oops, something went wrong on my end. Let's try that again!")
+
     finally:
-        print("=== calling ShowHood ===")
+        print("showing the orb back...")
         try:
             eel.ShowHood()
         except Exception as e:
