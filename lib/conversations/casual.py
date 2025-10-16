@@ -1,8 +1,3 @@
-"""
-Enhanced conversation system for Ivy assistant
-Handles casual conversations, small talk, and fun interactions
-"""
-
 import random
 from datetime import datetime
 
@@ -269,7 +264,6 @@ def route_conversation(query: str) -> str:
     ):
         return handle_about_self(query)
 
-    # Mood expressions
     if any(
         word in q
         for word in [
@@ -287,7 +281,6 @@ def route_conversation(query: str) -> str:
         if any(word in q for word in ["i", "im", "i'm", "feeling"]):
             return handle_mood(query)
 
-    # Fun queries (jokes, riddles, facts)
     fun_keywords = [
         "joke",
         "riddle",
@@ -296,7 +289,6 @@ def route_conversation(query: str) -> str:
         "entertain",
         "laugh",
         "smile",
-        "play",
         "game",
     ]
     if any(kw in q for kw in fun_keywords):
@@ -304,7 +296,6 @@ def route_conversation(query: str) -> str:
 
         return handle_fun_query(query)
 
-    # Not a conversational query
     return None
 
 
@@ -331,27 +322,3 @@ def get_conversation_starter():
         "Feeling curious? Ask me something!",
     ]
     return random.choice(starters)
-
-
-# ============= TESTING =============
-
-if __name__ == "__main__":
-    test_queries = [
-        "hello",
-        "good morning",
-        "how are you",
-        "you're awesome",
-        "thank you",
-        "tell me a joke",
-        "I'm feeling sad",
-        "I'm so bored",
-        "what can you do",
-        "goodbye",
-    ]
-
-    print("=== Testing Conversation System ===\n")
-    for query in test_queries:
-        print(f"User: {query}")
-        response = route_conversation(query)
-        print(f"Ivy: {response}")
-        print()
