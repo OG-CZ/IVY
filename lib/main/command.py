@@ -275,7 +275,7 @@ def all_commands(message=1) -> str:
 
         # ===== PRIORITY 1: CORE COMMANDS =====
 
-        # 1. OPEN COMMAND - Must check first
+        # OPEN COMMAND - Must check first
         if "open" in q and not is_youtube_query(query):
             # Make sure it's not "open [something] on youtube"
             from lib.main.features import open_command
@@ -283,28 +283,52 @@ def all_commands(message=1) -> str:
             open_command(query)
             return
 
-        # 2. YOUTUBE - Flexible detection with intelligent title extraction
+        # YOUTUBE - Flexible detection with intelligent title extraction
         if is_youtube_query(query):
             from lib.main.features import play_youtube
 
             play_youtube(query)
             return
 
-        # 3. WEATHER
+        # WEATHER
         if is_weather_query(query):
             from lib.main.features import answer_weather_query
 
             answer_weather_query(query)
             return
 
-        # 4. TIME & DATE
+        # GOOGLE
+        if (
+            "google" in q
+            and not is_youtube_query(query)
+            and not is_weather_query(query)
+        ):
+
+            from lib.main.features import extract_search_query, google_search
+
+            google_q = extract_search_query(query)
+
+            if google_q:
+
+                google_search(query)
+            else:
+                speak("What would you like me to search on Google?")
+                follow_up = take_command()
+                follow_up = (follow_up or "").strip()
+                if len(follow_up) >= 2:
+                    google_search(f"google {follow_up}")
+                else:
+                    speak("Okay, cancelled Google search.")
+            return
+
+        # TIME & DATE
         if any(kw in q for kw in time_date_keywords):
             from lib.main.features import get_time_date
 
             speak(get_time_date(query))
             return
 
-        # 5. MATH CALCULATIONS
+        # MATH CALCULATIONS
         if any(kw in q for kw in math_keywords):
             from lib.math.calculator import calculate
 
@@ -322,7 +346,7 @@ def all_commands(message=1) -> str:
                 )
             return
 
-        # 6. WHATSAPP
+        # WHATSAPP
         if any(kw in q for kw in message_keywords + call_keywords):
             from lib.main.features import findContact, whatsApp
             import re
