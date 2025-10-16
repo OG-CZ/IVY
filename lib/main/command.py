@@ -380,9 +380,11 @@ def all_commands(message=1) -> str:
         # print(f"Unknown query: {query!r}")
 
     except Exception as e:
+        import lib.main.response as response
+
         print("Error in all_commands:", e)
         traceback.print_exc()
-        speak("Oops, something went wrong on my end. Let's try that again!")
+        speak(random.choice(response.error_in_allcommands))
 
     finally:
         print("showing the orb back...")
