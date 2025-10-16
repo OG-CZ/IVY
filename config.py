@@ -15,6 +15,12 @@ VERSION = int(time.time())
 PORCUPINE_API_KEY = api.PORCUPINE_API_KEY  # paste here
 PORCUPINE_IVY_HOTKEY_MODEL = "model/hot-word-detection/hey-ivy_en_windows_v3_0_0.ppn"
 
+# news API -> https://newsapi.org/ - GET IT HERE
+NEWS_API_KEY = api.NEWS_API  # paste here
+NEWS_SOURCE = "the-times-of-india"
+
+# IP Api
+IP_API = "http://ip-api.com/json/?fields=status,message,city,regionName,country,lat,lon,timezone,query"
 
 # whatsapp country code
 COUNTRY_CODES = {
@@ -35,8 +41,6 @@ COUNTRY_CODES = {
 GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search"
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
 
-# IP Api
-IP_API = "http://ip-api.com/json/?fields=status,message,city,regionName,country,lat,lon,timezone,query"
 
 DEFAULT_CITY = "singapore"
 
