@@ -1,262 +1,358 @@
+"""
+Enhanced conversation system for Ivy assistant
+Handles casual conversations, small talk, and fun interactions
+FIXED: No longer conflicts with YouTube commands
+"""
+
 import random
+from datetime import datetime
 
-# Jokes with categories
-TECH_JOKES = [
-    "Why did the computer go to the doctor? Because it had a virus!",
-    "Why do programmers prefer dark mode? Because light attracts bugs!",
-    "How many programmers does it take to change a light bulb? None, that's a hardware problem!",
-    "Why do Java developers wear glasses? Because they can't C#!",
-    "There are only 10 types of people in the world: those who understand binary and those who don't.",
+# ============= GREETINGS & SMALL TALK =============
+
+GREETINGS = {
+    "morning": [
+        "Good morning! Hope you had a great night's sleep!",
+        "Morning! Ready to tackle the day?",
+        "Good morning! What can I help you with today?",
+        "Rise and shine! What's on the agenda?",
+    ],
+    "afternoon": [
+        "Good afternoon! How's your day going?",
+        "Afternoon! Need any help with something?",
+        "Hey there! What can I do for you?",
+        "Good afternoon! Hope you're having a productive day!",
+    ],
+    "evening": [
+        "Good evening! Winding down for the day?",
+        "Evening! How was your day?",
+        "Hey! What can I help you with tonight?",
+        "Good evening! Ready to relax?",
+    ],
+    "night": [
+        "It's getting late! What can I help you with?",
+        "Working late tonight? What do you need?",
+        "Hey night owl! What's up?",
+        "Still up? What can I do for you?",
+    ],
+}
+
+CASUAL_GREETINGS = [
+    "Hey there! What's up?",
+    "Hello! How can I help you today?",
+    "Hi! Great to hear from you!",
+    "Hey! What can I do for you?",
+    "Hello! Ready to get things done?",
 ]
 
-DAD_JOKES = [
-    "Why did the scarecrow win an award? Because he was outstanding in his field!",
-    "What do you call a bear with no teeth? A gummy bear!",
-    "Why don't eggs tell jokes? They'd crack each other up!",
-    "What's the best thing about Switzerland? I don't know, but the flag is a big plus!",
-    "I'm reading a book about anti-gravity. It's impossible to put down!",
+HOW_ARE_YOU_RESPONSES = [
+    "I'm doing great, thanks for asking! How about you?",
+    "I'm fantastic! Always excited to help out!",
+    "I'm good! Ready to assist you with anything!",
+    "Doing well! What can I help you with today?",
+    "I'm awesome! Thanks for checking in!",
 ]
 
-SCIENCE_JOKES = [
-    "Why was the math book sad? It had too many problems.",
-    "What do you call an educated tube? A graduated cylinder!",
-    "Why can't you trust atoms? They make up everything!",
-    "What did one DNA strand say to the other? Do these genes make me look fat?",
+GOODBYE_RESPONSES = [
+    "See you later! Have a great day!",
+    "Goodbye! Take care!",
+    "Catch you later! Stay awesome!",
+    "Bye! Let me know if you need anything else!",
+    "See you! Have a wonderful day!",
 ]
 
-# Riddles with difficulty levels
-EASY_RIDDLES = [
-    "What has keys but can't open locks? ...A piano!",
-    "I'm tall when I'm young and short when I'm old. What am I? ...A candle!",
-    "What can travel around the world while staying in a corner? ...A stamp!",
-]
-
-MEDIUM_RIDDLES = [
-    "I speak without a mouth and hear without ears. I have no body, but come alive with wind. What am I? ...An echo!",
-    "The more you take, the more you leave behind. What am I? ...Footsteps!",
-    "I have cities but no houses, forests but no trees, and water but no fish. What am I? ...A map!",
-]
-
-HARD_RIDDLES = [
-    "What flies without wings, cries without eyes, and moves without legs? ...A cloud!",
-    "I am not alive, but I grow. I don't have lungs, but I need air. What am I? ...Fire!",
-    "What can run but never walks, has a mouth but never talks? ...A river!",
-]
-
-# Interesting facts by category
-NATURE_FACTS = [
-    "Did you know? Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that's still perfectly edible!",
-    "A group of flamingos is called a 'flamboyance'. Pretty fitting, right?",
-    "Octopuses have three hearts and blue blood! Two hearts pump blood to the gills, while the third pumps it to the rest of the body.",
-    "Sea otters hold hands while sleeping so they don't drift apart. Adorable!",
-]
-
-FOOD_FACTS = [
-    "Bananas are berries, but strawberries aren't. Mind blown!",
-    "Honey is made from nectar and bee spit. Still delicious though!",
-    "Pineapples take about two years to grow. That's some serious patience!",
-    "A strawberry isn't actually a berry, it's an 'aggregate accessory fruit'.",
-]
-
-SPACE_FACTS = [
-    "A day on Venus is longer than its year! It takes 243 Earth days to rotate once, but only 225 days to orbit the sun.",
-    "There are more stars in the universe than grains of sand on all Earth's beaches. That's about 10,000 stars for every grain!",
-    "In space, two pieces of metal will permanently stick together if they touch. It's called cold welding!",
-]
-
-HUMAN_FACTS = [
-    "Your brain uses about 20% of your body's energy, but only makes up 2% of your weight. No wonder thinking makes you tired!",
-    "Humans are the only animals that blush. And the only ones that need to!",
-    "Your nose can remember 50,000 different scents. That's pretty impressive!",
-]
-
-# Conversational responses
-JOKE_INTROS = [
-    "Alright, here's a good one:",
-    "Oh, I love this one!",
-    "Okay okay, check this out:",
-    "This one always cracks me up:",
-    "Prepare yourself for this gem:",
-]
-
-RIDDLE_INTROS = [
-    "Hmm, let me think of a good riddle...",
-    "Alright, riddle time! Try to solve this:",
-    "Here's a brain teaser for you:",
-    "Let's see if you can figure this one out:",
-    "Ooh, I've got a tricky one:",
-]
-
-FACT_INTROS = [
-    "Here's something cool:",
-    "Oh, this is fascinating!",
-    "Fun fact alert!",
-    "You're gonna love this:",
-    "This one's wild:",
-]
-
-PLAYFUL_RESPONSES = [
-    "I'm having fun chatting with you! Want to hear a joke, riddle, or fun fact?",
-    "Life's too short to be boring! How about a joke to brighten your day?",
-    "I'm all about good vibes! Want something funny, mysterious, or mind-blowing?",
-    "Let's keep this fun going! Pick your poison: joke, riddle, or fact?",
-    "You know what? I really enjoy our conversations! What can I share with you today?",
+THANK_YOU_RESPONSES = [
+    "You're very welcome! Happy to help!",
+    "No problem at all! That's what I'm here for!",
+    "Anytime! Glad I could assist!",
+    "You're welcome! Let me know if you need anything else!",
+    "My pleasure! Always here to help!",
 ]
 
 COMPLIMENT_RESPONSES = [
-    "Aww, you're sweet! Here's something fun for being so nice:",
-    "Thanks! You just made my circuits happy. Let me return the favor:",
-    "You're pretty cool yourself! Here's a little something:",
+    "Aww, thanks! You're pretty awesome yourself!",
+    "That's so nice of you to say! You just made my circuits happy!",
+    "Thank you! You're making me blush... if I could blush!",
+    "You're too kind! I appreciate that!",
+    "Thanks! You're a great person to work with too!",
 ]
 
-CONFUSED_RESPONSES = [
-    "Hmm, not sure what you're looking for, but here's something entertaining anyway!",
-    "Let me just throw something fun at you:",
-    "When in doubt, share a joke!",
+# ============= PERSONALITY RESPONSES =============
+
+ABOUT_SELF = [
+    "I'm Ivy, your personal assistant! I can help with tasks, answer questions, and have fun conversations!",
+    "I'm Ivy! I'm here to make your life easier and hopefully put a smile on your face!",
+    "I'm Ivy, your friendly AI assistant. I can help with all sorts of things and I love a good chat!",
 ]
 
+CAPABILITIES = [
+    "I can open apps, search YouTube, tell you the weather, do calculations, send WhatsApp messages, and much more! Oh, and I tell pretty good jokes too!",
+    "I'm pretty versatile! I can help with apps, weather, calculations, messages, and I'm always up for some fun conversation!",
+    "I do lots of things! From practical stuff like opening apps and checking weather, to fun stuff like jokes and riddles. What do you need?",
+]
 
-def answer_fun_query(query: str) -> str:
+# ============= MOOD & FEELINGS =============
+
+SAD_COMFORT = [
+    "I'm sorry you're feeling down. Want to talk about it? Or maybe I can cheer you up with a joke?",
+    "Aw, that's tough. I'm here for you! Sometimes a good laugh helps - want to hear something funny?",
+    "I hear you. Everyone has rough days. How about a fun fact to distract you for a moment?",
+    "I'm here for you! Would a riddle or a joke help lighten things up?",
+]
+
+HAPPY_RESPONSES = [
+    "That's awesome! I love your energy! What's making you so happy?",
+    "Yes! Love to hear it! Your happiness is contagious!",
+    "That's great! Keep that positive vibe going!",
+    "Wonderful! Glad you're having a good day!",
+]
+
+BORED_RESPONSES = [
+    "Bored? Not on my watch! Want to hear a joke, riddle, or fun fact?",
+    "Let's fix that boredom right now! How about something entertaining?",
+    "Boredom is my enemy! Let me throw something fun at you!",
+    "I've got just the thing for boredom - pick your poison: joke, riddle, or fact?",
+]
+
+EXCITED_RESPONSES = [
+    "Yes! That's the spirit! What's got you so pumped?",
+    "I can feel your energy from here! That's awesome!",
+    "Love the enthusiasm! Tell me more!",
+    "That's what I like to hear! What's happening?",
+]
+
+# ============= CONVERSATION HANDLERS =============
+
+
+def handle_greeting(query: str) -> str:
+    """Handle greetings based on time of day"""
+    q = query.lower()
+    hour = datetime.now().hour
+
+    # Check for specific time-based greetings
+    if any(word in q for word in ["good morning", "morning"]):
+        return random.choice(GREETINGS["morning"])
+    elif any(word in q for word in ["good afternoon", "afternoon"]):
+        return random.choice(GREETINGS["afternoon"])
+    elif any(word in q for word in ["good evening", "evening"]):
+        return random.choice(GREETINGS["evening"])
+    elif any(word in q for word in ["good night", "night"]):
+        return random.choice(GREETINGS["night"])
+
+    # Time-based auto greeting
+    if 5 <= hour < 12:
+        return random.choice(GREETINGS["morning"])
+    elif 12 <= hour < 17:
+        return random.choice(GREETINGS["afternoon"])
+    elif 17 <= hour < 21:
+        return random.choice(GREETINGS["evening"])
+    else:
+        return random.choice(GREETINGS["night"])
+
+
+def handle_how_are_you(query: str) -> str:
+    """Respond to 'how are you' questions"""
+    return random.choice(HOW_ARE_YOU_RESPONSES)
+
+
+def handle_goodbye(query: str) -> str:
+    """Handle goodbye messages"""
+    return random.choice(GOODBYE_RESPONSES)
+
+
+def handle_thank_you(query: str) -> str:
+    """Respond to thank you messages"""
+    return random.choice(THANK_YOU_RESPONSES)
+
+
+def handle_compliment(query: str) -> str:
+    """Respond to compliments"""
+    return random.choice(COMPLIMENT_RESPONSES)
+
+
+def handle_about_self(query: str) -> str:
+    """Answer questions about the assistant"""
+    q = query.lower()
+    if any(word in q for word in ["what can you do", "capabilities", "help me with"]):
+        return random.choice(CAPABILITIES)
+    return random.choice(ABOUT_SELF)
+
+
+def handle_mood(query: str) -> str:
+    """Respond to user's mood expressions"""
+    q = query.lower()
+
+    if any(word in q for word in ["sad", "down", "depressed", "upset", "crying"]):
+        return random.choice(SAD_COMFORT)
+    elif any(
+        word in q for word in ["happy", "great", "wonderful", "fantastic", "excited"]
+    ):
+        return random.choice(HAPPY_RESPONSES)
+    elif any(word in q for word in ["bored", "boring", "nothing to do"]):
+        return random.choice(BORED_RESPONSES)
+    elif any(word in q for word in ["excited", "pumped", "hyped", "stoked"]):
+        return random.choice(EXCITED_RESPONSES)
+
+    return "I hear you! How can I help make things better?"
+
+
+# ============= MAIN ROUTER =============
+
+
+def route_conversation(query: str) -> str:
     """
-    Enhanced fun query handler with natural conversation flow
+    Main router for all conversational queries
+    Returns appropriate response or None if not a conversation query
     """
-    q = (query or "").lower()
+    if not query or len(query.strip()) < 2:
+        return None
 
-    # Jokes
-    if any(word in q for word in ["joke", "funny", "laugh", "humor"]):
-        intro = random.choice(JOKE_INTROS)
+    q = query.lower().strip()
 
-        if "tech" in q or "computer" in q or "programming" in q:
-            joke = random.choice(TECH_JOKES)
-        elif "dad" in q:
-            joke = random.choice(DAD_JOKES)
-        elif "science" in q or "math" in q:
-            joke = random.choice(SCIENCE_JOKES)
-        else:
-            all_jokes = TECH_JOKES + DAD_JOKES + SCIENCE_JOKES
-            joke = random.choice(all_jokes)
+    # Greetings - but NOT if it contains youtube keywords
+    if "youtube" not in q and "yt" not in q:
+        if any(
+            word in q
+            for word in [
+                "hello",
+                "hi",
+                "hey",
+                "good morning",
+                "good afternoon",
+                "good evening",
+                "good night",
+            ]
+        ):
+            # Make sure it's just a greeting, not "hey open chrome"
+            if "open" not in q or q.startswith(("hello", "hi", "hey")):
+                return handle_greeting(query)
 
-        return f"{intro} {joke}"
+    # How are you
+    if any(
+        phrase in q
+        for phrase in ["how are you", "how're you", "how are u", "you okay", "you good"]
+    ):
+        return handle_how_are_you(query)
 
-    # Riddles
-    if any(word in q for word in ["riddle", "puzzle", "brain teaser", "guess"]):
-        intro = random.choice(RIDDLE_INTROS)
-
-        if "easy" in q or "simple" in q:
-            riddle = random.choice(EASY_RIDDLES)
-        elif "hard" in q or "difficult" in q or "tricky" in q:
-            riddle = random.choice(HARD_RIDDLES)
-        else:
-            all_riddles = EASY_RIDDLES + MEDIUM_RIDDLES + HARD_RIDDLES
-            riddle = random.choice(all_riddles)
-
-        return f"{intro} {riddle}"
-
-    # Facts
+    # Goodbye
     if any(
         word in q
-        for word in ["fact", "did you know", "tell me something", "teach me", "learn"]
+        for word in ["goodbye", "bye", "see you", "catch you later", "talk later"]
     ):
-        intro = random.choice(FACT_INTROS)
+        return handle_goodbye(query)
 
-        if any(word in q for word in ["nature", "animal", "ocean", "wildlife"]):
-            fact = random.choice(NATURE_FACTS)
-        elif any(word in q for word in ["food", "eat", "fruit"]):
-            fact = random.choice(FOOD_FACTS)
-        elif any(word in q for word in ["space", "planet", "star", "galaxy"]):
-            fact = random.choice(SPACE_FACTS)
-        elif any(word in q for word in ["human", "body", "brain"]):
-            fact = random.choice(HUMAN_FACTS)
-        else:
-            all_facts = NATURE_FACTS + FOOD_FACTS + SPACE_FACTS + HUMAN_FACTS
-            fact = random.choice(all_facts)
-
-        return f"{intro} {fact}"
+    # Thank you
+    if any(
+        phrase in q for phrase in ["thank you", "thanks", "appreciate it", "thank u"]
+    ):
+        return handle_thank_you(query)
 
     # Compliments
-    if any(word in q for word in ["love you", "awesome", "cool", "amazing", "great"]):
-        response = random.choice(COMPLIMENT_RESPONSES)
-        bonus = random.choice(TECH_JOKES + NATURE_FACTS)
-        return f"{response} {bonus}"
-
-    # Playful/general fun
     if any(
         word in q
-        for word in ["play", "game", "fun", "entertain", "bored", "smile", "happy"]
+        for word in [
+            "awesome",
+            "amazing",
+            "great job",
+            "love you",
+            "you're the best",
+            "brilliant",
+        ]
     ):
-        return random.choice(PLAYFUL_RESPONSES)
+        if any(word in q for word in ["you", "you're", "your", "ivy"]):
+            return handle_compliment(query)
 
-    # Default: surprise them with something random
-    response = random.choice(CONFUSED_RESPONSES)
-    content_pool = TECH_JOKES + DAD_JOKES + EASY_RIDDLES + NATURE_FACTS
-    bonus = random.choice(content_pool)
-    return f"{response} {bonus}"
+    if any(
+        phrase in q
+        for phrase in [
+            "who are you",
+            "what are you",
+            "tell me about yourself",
+            "what can you do",
+        ]
+    ):
+        return handle_about_self(query)
 
+    if any(
+        word in q
+        for word in [
+            "sad",
+            "happy",
+            "bored",
+            "excited",
+            "depressed",
+            "upset",
+            "down",
+            "great",
+            "wonderful",
+        ]
+    ):
+        if any(word in q for word in ["i", "im", "i'm", "feeling"]):
+            return handle_mood(query)
 
-def handle_fun_query(query: str) -> str:
-    """
-    Main handler for fun/casual queries with conversational flair
-    """
-    return answer_fun_query(query)
-
-
-def match(query: str) -> bool:
-    """Return True if this module should handle the query (simple keyword check)."""
-    if not query:
-        return False
-    q = query.lower()
     fun_keywords = [
         "joke",
         "riddle",
         "fact",
-        "fun",
         "entertain",
         "laugh",
         "smile",
-        "play",
-        "game",
     ]
-    return any(kw in q for kw in fun_keywords)
+
+    if "youtube" not in q and "open" not in q and "search" not in q:
+        if any(kw in q for kw in fun_keywords):
+            from lib.conversations.fun import handle_fun_query
+
+            return handle_fun_query(query)
+
+    return None
+
+
+def match(query: str) -> bool:
+    """Compatibility wrapper for router registry"""
+    return route_conversation(query) is not None
 
 
 def handle(query: str) -> str:
-    return handle_fun_query(query)
+    """Compatibility wrapper for router registry"""
+    return route_conversation(query)
 
 
-# Optional: Add a function to get random entertainment
-def get_random_entertainment():
-    """Returns a random joke, riddle, or fact"""
-    all_content = (
-        TECH_JOKES
-        + DAD_JOKES
-        + SCIENCE_JOKES
-        + EASY_RIDDLES
-        + MEDIUM_RIDDLES
-        + HARD_RIDDLES
-        + NATURE_FACTS
-        + FOOD_FACTS
-        + SPACE_FACTS
-        + HUMAN_FACTS
-    )
-    return random.choice(all_content)
+# ============= RANDOM CONVERSATION STARTERS =============
 
 
-# Example usage and testing
+def get_conversation_starter():
+    """Get a random conversation starter for idle moments"""
+    starters = [
+        "Want to hear something interesting?",
+        "I've got a fun fact if you're interested!",
+        "How about a quick riddle?",
+        "Need a laugh? I've got jokes!",
+        "Feeling curious? Ask me something!",
+    ]
+    return random.choice(starters)
+
+
+# ============= TESTING =============
+
 if __name__ == "__main__":
     test_queries = [
-        "tell me a joke",
-        "give me a tech joke",
-        "riddle me this",
-        "tell me a hard riddle",
-        "fun fact please",
-        "tell me about space",
+        "hello",
+        "good morning",
+        "how are you",
         "you're awesome",
-        "I'm bored",
-        "make me laugh",
+        "thank you",
+        "tell me a joke",
+        "I'm feeling sad",
+        "I'm so bored",
+        "what can you do",
+        "goodbye",
+        "play despacito on youtube",
+        "search cats on youtube",
     ]
 
-    print("=== Testing Fun Conversation Module ===\n")
+    print("=== Testing Conversation System ===\n")
     for query in test_queries:
         print(f"User: {query}")
-        print(f"Assistant: {handle_fun_query(query)}")
+        response = route_conversation(query)
+        print(f"Ivy: {response}")
         print()
