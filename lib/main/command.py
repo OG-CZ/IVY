@@ -38,7 +38,7 @@ message_keywords = [
 
 math_keywords = [
     "calculate",
-    "what is",
+    "whats",
     "what's",
     "plus",
     "minus",
@@ -392,6 +392,7 @@ def all_commands(message=1) -> str:
         ):
             from lib.main.features import wikipedia_search
 
+            query = query.replace("wikipedia", "")
             wikipedia_search(query)
 
         # LET IVY REPEAT YOUR WORDS
@@ -507,7 +508,7 @@ def all_commands(message=1) -> str:
         # print(f"Unknown query: {query!r}")
 
     except Exception as e:
-        import lib.main.response as response
+        from lib.main import response
 
         print("Error in all_commands:", e)
         traceback.print_exc()

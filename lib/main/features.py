@@ -721,7 +721,7 @@ def wikipedia_search(topic):
 
     try:
 
-        res = wp.summary(topic, sentences=2)
+        res = wp.summary(topic, sentences=1)
         speak(res)
     except Exception as e:
 

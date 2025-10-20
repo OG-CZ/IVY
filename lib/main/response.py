@@ -113,14 +113,14 @@ city_not_found_user = [
 ]
 
 cannot_calculate = [
-    "Sorry, I couldn't calculate that. {error}",
-    "Hmm, I'm having trouble with that calculation. {error}",
-    "I wasn't able to solve that math problem. {error}",
-    "Oops, something went wrong with the calculation. {error}",
-    "I can't figure out that math. {error}",
-    "That calculation didn't work. {error}",
-    "I'm unable to process that math expression. {error}",
-    "Sorry, I encountered an error with that calculation. {error}",
+    "Sorry, I couldn't calculate that",
+    "Hmm, I'm having trouble with that calculation",
+    "I wasn't able to solve that math problem",
+    "Oops, something went wrong with the calculation",
+    "I can't figure out that math",
+    "That calculation didn't work",
+    "I'm unable to process that math expression",
+    "Sorry, I encountered an error with that calculation",
 ]
 
 error_in_allcommands = [
