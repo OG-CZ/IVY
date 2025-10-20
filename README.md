@@ -37,15 +37,12 @@ pip install -r requirements.txt
 
 If you are on VSCode you must select the python interpreter that you locally created e.g. "venivy"
 
-## User Guide
+### User Guide
 
-Launch the Python application (run.py)
-
-Ensure microphone and speaker access are enabled.
-
-Speak a command or talk to Ivy (e.g., “Open Notepad” or “What time is it?”).
-
-The assistant executes the task and responds via voice output
+1. Launch the Python application (run.py)
+2. Ensure microphone and speaker access are enabled
+3. Speak a command or talk to Ivy
+4. The assistant executes the task and responds via voice output
 
 </br>
 <div align="center">
