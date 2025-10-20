@@ -18,3 +18,5 @@ geopy==2.4.1
 newsapi-python==0.2.7
 psutil==7.1.0
 wikipedia==1.4.0
+faster-whisper==1.2.0
+aiohttp==3.13.1
