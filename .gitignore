@@ -6,3 +6,4 @@ __pycache__/
 .vscode/
 api.py
 *.jpg
+ivy copy.db
