@@ -473,7 +473,7 @@ def all_commands(message=1) -> str:
                 message = ""
                 if any(kw in query.lower() for kw in message_keywords):
                     flag = "message"
-                    speak(random.choice(response.ask_message_prompt_user))
+                    speak("What message to send?")
                     message = take_command()
                 elif any(kw in query.lower() for kw in call_keywords):
                     if "video call" in query.lower():
