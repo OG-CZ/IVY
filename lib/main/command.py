@@ -394,6 +394,7 @@ def all_commands(message=1) -> str:
 
             query = query.replace("wikipedia", "")
             wikipedia_search(query)
+            return
 
         # LET IVY REPEAT YOUR WORDS
         if any(kw in q for kw in copy_me_keywords):
