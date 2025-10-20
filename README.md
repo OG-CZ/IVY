@@ -17,7 +17,7 @@ I.V.Y. is the system that powers everything and Ivy is the voice of that system 
 It's recommended to use a virtual environment to keep dependencies isolated
 
 ```bash
-python -m venv venvivy
+py -m venv venvivy
 ```
 
 Then, if you have installed to activate
@@ -43,6 +43,20 @@ If you are on VSCode you must select the python interpreter that you locally cre
 2. Ensure microphone and speaker access are enabled
 3. Speak a command or talk to Ivy
 4. The assistant executes the task and responds via voice output
+
+## Features
+
+- Face Authentication
+- Dynamic news reporting using API integration
+- Open website with voice command backed by database
+- Open any apps with voice command backed by database
+- Tells time, Weather, Date on any location
+- Wikipedia powered AI
+- Intelligent word sensing - fixes buzzy words
+- Youtube Searching
+- Greet User
+- Hotword detection
+- Call, Video-Call and Text feature
 
 </br>
 <div align="center">
